@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Atmosphere.note</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #F3F0EE; --ink: #221B19; --dim: #9A8F8C;
+      --line: #CABFBC; --rose: #D4C8BE; --soft: #E8DFDB;
+    }
+    body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.7; min-height: 100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    }
+    .login-box {
+      width: 360px; padding: 48px 40px; border: 1px solid var(--line); background: #fff;
+    }
+    .login-box h1 { font-family: Georgia, serif; font-size: 22px; font-weight: normal; font-style: italic; margin-bottom: 6px; }
+    .login-box p { font-size: 12px; color: var(--dim); margin-bottom: 32px; }
+    .login-box label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); display: block; margin-bottom: 6px; }
+    .login-box input {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--line); background: var(--bg);
+      font-size: 14px; color: var(--ink); outline: none; margin-bottom: 16px;
+    }
+    .login-box input:focus { border-color: var(--dim); }
+    .login-box button {
+      width: 100%; padding: 12px; background: var(--ink); color: #fff;
+      border: none; font-size: 13px; letter-spacing: 0.08em; cursor: pointer; transition: opacity 0.2s;
+    }
+    .login-box button:hover { opacity: 0.8; }
+    .login-error { font-size: 12px; color: #b85c5c; margin-top: 10px; display: none; }
+
+    /* ── ADMIN ── */
+    #admin-screen { display: none; }
+
+    .admin-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+      background: var(--ink); padding: 0 40px; height: 52px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .admin-nav span { font-family: Georgia, serif; font-size: 13px; color: rgba(255,255,255,0.8); font-style: italic; }
+    .admin-nav a { font-size: 11px; color: rgba(255,255,255,0.5); text-decoration: none; letter-spacing: 0.1em; cursor: pointer; }
+    .admin-nav a:hover { color: #fff; }
+
+    .admin-body { max-width: 800px; margin: 0 auto; padding: 88px 40px 100px; }
+
+    .admin-section { margin-bottom: 56px; }
+    .section-title {
+      font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 24px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    .field-group { margin-bottom: 20px; }
+    .field-group label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dim); display: block; margin-bottom: 6px; }
+    .field-group input, .field-group textarea {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--line); background: #fff;
+      font-size: 14px; color: var(--ink); font-family: inherit; outline: none;
+      transition: border-color 0.2s; resize: vertical;
+    }
+    .field-group input:focus, .field-group textarea:focus { border-color: var(--dim); }
+    .field-group textarea { min-height: 80px; line-height: 1.7; }
+
+    .arc-card {
+      border: 1px solid var(--line); padding: 20px; margin-bottom: 12px; background: #fff;
+    }
+    .arc-card-header {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 16px;
+    }
+    .arc-card-grid { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 12px; margin-bottom: 12px; }
+
+    .save-bar {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      background: #fff; border-top: 1px solid var(--line);
+      padding: 16px 40px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .save-bar p { font-size: 12px; color: var(--dim); }
+    .save-btn {
+      padding: 12px 32px; background: var(--ink); color: #fff;
+      border: none; font-size: 13px; letter-spacing: 0.08em; cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .save-btn:hover { opacity: 0.8; }
+    .save-msg { font-size: 12px; color: #5a8a5a; margin-left: 12px; display: none; }
+
+    .hint { font-size: 11px; color: var(--dim); margin-top: 4px; font-style: italic; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <h1>Atmosphere.note</h1>
+    <p>관리자 페이지입니다.</p>
+    <label>비밀번호</label>
+    <input type="password" id="pw-input" placeholder="비밀번호 입력" />
+    <button onclick="checkLogin()">로그인</button>
+    <p class="login-error" id="login-error">비밀번호가 틀렸습니다.</p>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <nav class="admin-nav">
+    <span>Admin — Atmosphere.note</span>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <a href="/" target="_blank">홈페이지 보기 →</a>
+      <a onclick="logout()">로그아웃</a>
+    </div>
+  </nav>
+
+  <div class="admin-body">
+
+    <!-- ABOUT -->
+    <div class="admin-section">
+      <p class="section-title">About 텍스트</p>
+
+      <div class="field-group">
+        <label>단락 1</label>
+        <textarea id="about-p1" rows="3"></textarea>
+      </div>
+      <div class="field-group">
+        <label>단락 2 <span style="color:var(--rose);font-style:italic;">(앞 문장은 강조색으로 표시됩니다)</span></label>
+        <input type="text" id="about-p2-highlight" placeholder="강조 문장 (짧게)" />
+        <div style="margin-top:8px;">
+          <textarea id="about-p2-rest" rows="2" placeholder="이어지는 내용"></textarea>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>단락 3 <span style="color:var(--rose);font-style:italic;">(앞 문장은 강조색으로 표시됩니다)</span></label>
+        <input type="text" id="about-p3-highlight" placeholder="강조 문장 (짧게)" />
+        <div style="margin-top:8px;">
+          <textarea id="about-p3-rest" rows="2" placeholder="이어지는 내용"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ARCHIVE -->
+    <div class="admin-section">
+      <p class="section-title">아카이브 항목</p>
+
+      <div id="archive-editor"></div>
+    </div>
+
+    <!-- CONTACT -->
+    <div class="admin-section">
+      <p class="section-title">Contact 정보</p>
+      <div class="field-group">
+        <label>Email (Naver)</label>
+        <input type="text" id="contact-email" />
+      </div>
+      <div class="field-group">
+        <label>Gmail</label>
+        <input type="text" id="contact-gmail" />
+      </div>
+      <div class="field-group">
+        <label>Instagram (@ 포함)</label>
+        <input type="text" id="contact-instagram" />
+      </div>
+    </div>
+
+  </div>
+
+  <div class="save-bar">
+    <div style="display:flex;align-items:center;">
+      <p>저장하면 <strong>index.html</strong> 파일이 다운로드됩니다. GitHub에 업로드하면 반영됩니다.</p>
+      <span class="save-msg" id="save-msg">✓ 다운로드 완료</span>
+    </div>
+    <button class="save-btn" onclick="saveAndDownload()">저장 및 다운로드</button>
+  </div>
+</div>
+
+<script>
+  const PASSWORD = 'atmo2026';
+
+  // ── 로그인 ──
+  function checkLogin() {
+    const val = document.getElementById('pw-input').value;
+    if (val === PASSWORD) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadContent();
+    } else {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  }
+  document.getElementById('pw-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') checkLogin();
+  });
+
+  function logout() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+    document.getElementById('pw-input').value = '';
+  }
+
+  // ── 콘텐츠 로드 ──
+  let currentDoc = null;
+
+  async function loadContent() {
+    try {
+      const res = await fetch('/index.html?' + Date.now());
+      const html = await res.text();
+      const parser = new DOMParser();
+      currentDoc = parser.parseFromString(html, 'text/html');
+
+      loadAbout();
+      loadArchive();
+      loadContact();
+    } catch(e) {
+      alert('index.html을 불러오지 못했습니다. 서버에서 실행 중인지 확인하세요.');
+    }
+  }
+
+  // About
+  function loadAbout() {
+    const paras = currentDoc.querySelectorAll('.intro-text p');
+    if (paras[0]) document.getElementById('about-p1').value = paras[0].textContent.trim();
+    if (paras[1]) {
+      const span = paras[1].querySelector('span');
+      const full = paras[1].textContent.trim();
+      if (span) {
+        document.getElementById('about-p2-highlight').value = span.textContent.trim();
+        document.getElementById('about-p2-rest').value = full.replace(span.textContent.trim(), '').trim();
+      } else {
+        document.getElementById('about-p2-rest').value = full;
+      }
+    }
+    if (paras[2]) {
+      const span = paras[2].querySelector('span');
+      const full = paras[2].textContent.trim();
+      if (span) {
+        document.getElementById('about-p3-highlight').value = span.textContent.trim();
+        document.getElementById('about-p3-rest').value = full.replace(span.textContent.trim(), '').trim();
+      } else {
+        document.getElementById('about-p3-rest').value = full;
+      }
+    }
+  }
+
+  // Archive
+  const arcTypes = ['공간 (사진)', '에세이 · 차', '산책 (영상)', '공간 (사진) 2', '에세이 · 산책'];
+  function loadArchive() {
+    const items = currentDoc.querySelectorAll('.arc-item');
+    const container = document.getElementById('archive-editor');
+    container.innerHTML = '';
+
+    items.forEach((item, i) => {
+      const tag = item.querySelector('.arc-tag')?.textContent.trim() || '';
+      const title = item.querySelector('.arc-title')?.textContent.trim() || '';
+      const excerpt = item.querySelector('.arc-excerpt')?.textContent.trim() || '';
+      const date = item.querySelector('.arc-date')?.textContent.trim() || '';
+
+      const card = document.createElement('div');
+      card.className = 'arc-card';
+      card.innerHTML = `
+        <p class="arc-card-header">항목 ${i+1} — ${arcTypes[i] || ''}</p>
+        <div class="arc-card-grid">
+          <div class="field-group" style="margin-bottom:0;">
+            <label>태그</label>
+            <input type="text" id="arc-${i}-tag" value="${tag}" />
+          </div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label>제목</label>
+            <input type="text" id="arc-${i}-title" value="${title}" />
+          </div>
+          <div class="field-group" style="margin-bottom:0;">
+            <label>날짜</label>
+            <input type="text" id="arc-${i}-date" value="${date}" placeholder="2025. 04" />
+          </div>
+        </div>
+        ${excerpt ? `
+        <div class="field-group" style="margin-bottom:0;">
+          <label>본문 (에세이)</label>
+          <textarea id="arc-${i}-excerpt" rows="2">${excerpt}</textarea>
+        </div>` : `<input type="hidden" id="arc-${i}-excerpt" value="" />`}
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Contact
+  function loadContact() {
+    const links = currentDoc.querySelectorAll('.c-link');
+    links.forEach(link => {
+      const label = link.querySelector('span:first-child')?.textContent.trim().toLowerCase();
+      const val = link.querySelector('span:last-child')?.textContent.trim();
+      if (label === 'email') document.getElementById('contact-email').value = val || '';
+      if (label === 'gmail') document.getElementById('contact-gmail').value = val || '';
+      if (label === 'instagram') document.getElementById('contact-instagram').value = val || '';
+    });
+  }
+
+  // ── 저장 ──
+  function saveAndDownload() {
+    if (!currentDoc) { alert('콘텐츠를 먼저 불러오세요.'); return; }
+
+    const doc = currentDoc.cloneNode(true);
+
+    // About
+    const paras = doc.querySelectorAll('.intro-text p');
+    if (paras[0]) paras[0].textContent = document.getElementById('about-p1').value;
+    if (paras[1]) {
+      const h = document.getElementById('about-p2-highlight').value;
+      const r = document.getElementById('about-p2-rest').value;
+      paras[1].innerHTML = h ? `<span>${h}</span> ${r}` : r;
+    }
+    if (paras[2]) {
+      const h = document.getElementById('about-p3-highlight').value;
+      const r = document.getElementById('about-p3-rest').value;
+      paras[2].innerHTML = h ? `<span>${h}</span> ${r}` : r;
+    }
+
+    // Archive
+    const items = doc.querySelectorAll('.arc-item');
+    items.forEach((item, i) => {
+      const tag = document.getElementById(`arc-${i}-tag`)?.value;
+      const title = document.getElementById(`arc-${i}-title`)?.value;
+      const date = document.getElementById(`arc-${i}-date`)?.value;
+      const excerpt = document.getElementById(`arc-${i}-excerpt`)?.value;
+      if (item.querySelector('.arc-tag') && tag !== undefined) item.querySelector('.arc-tag').textContent = tag;
+      if (item.querySelector('.arc-title') && title !== undefined) item.querySelector('.arc-title').textContent = title;
+      if (item.querySelector('.arc-date') && date !== undefined) item.querySelector('.arc-date').textContent = date;
+      if (item.querySelector('.arc-excerpt') && excerpt !== undefined) item.querySelector('.arc-excerpt').textContent = excerpt;
+    });
+
+    // Contact
+    const links = doc.querySelectorAll('.c-link');
+    links.forEach(link => {
+      const label = link.querySelector('span:first-child')?.textContent.trim().toLowerCase();
+      const valSpan = link.querySelector('span:last-child');
+      if (label === 'email') {
+        const v = document.getElementById('contact-email').value;
+        if (valSpan) valSpan.textContent = v;
+        link.href = 'mailto:' + v;
+      }
+      if (label === 'gmail') {
+        const v = document.getElementById('contact-gmail').value;
+        if (valSpan) valSpan.textContent = v;
+        link.href = 'mailto:' + v;
+      }
+      if (label === 'instagram') {
+        const v = document.getElementById('contact-instagram').value;
+        if (valSpan) valSpan.textContent = v;
+        link.href = 'https://instagram.com/' + v.replace('@','');
+      }
+    });
+
+    // Download
+    const html = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'index.html'; a.click();
+    URL.revokeObjectURL(url);
+
+    const msg = document.getElementById('save-msg');
+    msg.style.display = 'inline';
+    setTimeout(() => msg.style.display = 'none', 3000);
+  }
+</script>
+</body>
+</html>
