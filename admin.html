@@ -4,13 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Atmosphere.note</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
       --bg: #F3F0EE; --ink: #221B19; --dim: #9A8F8C;
       --line: #CABFBC; --rose: #D4C8BE; --soft: #E8DFDB;
     }
-    body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; font-size: 14px; line-height: 1.7; min-height: 100vh; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Jost', system-ui, sans-serif; font-size: 14px; line-height: 1.7; min-height: 100vh; }
 
     /* ── LOGIN ── */
     #login-screen {
@@ -19,7 +22,7 @@
     .login-box {
       width: 360px; padding: 48px 40px; border: 1px solid var(--line); background: #fff;
     }
-    .login-box h1 { font-family: Georgia, serif; font-size: 22px; font-weight: normal; font-style: italic; margin-bottom: 6px; }
+    .login-box h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: normal; font-style: italic; margin-bottom: 6px; }
     .login-box p { font-size: 12px; color: var(--dim); margin-bottom: 32px; }
     .login-box label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--rose); display: block; margin-bottom: 6px; }
     .login-box input {
@@ -42,7 +45,7 @@
       background: var(--ink); padding: 0 40px; height: 52px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .admin-nav span { font-family: Georgia, serif; font-size: 13px; color: rgba(255,255,255,0.8); font-style: italic; }
+    .admin-nav span { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 13px; color: rgba(255,255,255,0.8); font-style: italic; }
     .admin-nav a { font-size: 11px; color: rgba(255,255,255,0.5); text-decoration: none; letter-spacing: 0.1em; cursor: pointer; }
     .admin-nav a:hover { color: #fff; }
 

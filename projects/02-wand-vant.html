@@ -4,20 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>02 WAND[vant] — Atmosphere.note</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root { --bg: #F3F0EE; --ink: #221B19; --dim: #9A8F8C; --line: #CABFBC; --rose: #D4C8BE; --soft: #E8DFDB; }
-    body { background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, sans-serif; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Jost', system-ui, sans-serif; }
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 99; background: var(--bg); border-bottom: 1px solid var(--line); padding: 0 40px; height: 56px; display: flex; align-items: center; justify-content: space-between; }
     .nav-back { font-size: 12px; letter-spacing: 0.1em; color: var(--dim); text-decoration: none; display: flex; align-items: center; gap: 8px; transition: color 0.2s; }
     .nav-back:hover { color: var(--rose); }
     .nav-back::before { content: '←'; font-size: 14px; }
-    .nav-title { font-family: Georgia, serif; font-size: 13px; letter-spacing: 0.08em; color: var(--ink); }
-    .nav-num { font-size: 11px; color: var(--rose); font-family: Georgia, serif; font-style: italic; }
+    .nav-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 13px; letter-spacing: 0.08em; color: var(--ink); }
+    .nav-num { font-size: 11px; color: var(--rose); font-family: 'Cormorant Garamond', Georgia, serif; font-style: italic; }
     .proj-header { padding: 96px 40px 56px; max-width: 900px; margin: 0 auto; border-bottom: 1px solid var(--line); }
     .proj-type { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--rose); margin-bottom: 16px; }
-    .proj-title { font-family: Georgia, serif; font-size: clamp(36px, 6vw, 64px); font-weight: normal; font-style: italic; line-height: 1.1; margin-bottom: 24px; }
+    .proj-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(36px, 6vw, 64px); font-weight: normal; font-style: italic; line-height: 1.1; margin-bottom: 24px; }
     .proj-sub { font-size: 14px; color: var(--dim); line-height: 1.7; max-width: 600px; margin-bottom: 32px; }
     .proj-meta-row { display: flex; gap: 40px; flex-wrap: wrap; }
     .proj-meta-item { display: flex; flex-direction: column; gap: 3px; }
