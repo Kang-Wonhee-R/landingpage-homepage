@@ -331,10 +331,14 @@
       transform: scale(1.04);
     }
 
-    /* Tea 게시물 — 텍스트 카드 matcha */
-    .arc-item.matcha .arc-label {
+    /* Tea 게시물 — 카드 전체 matcha */
+    .arc-item.matcha {
       background: var(--matcha);
-      border-top: none;
+    }
+
+    .arc-item.matcha .arc-num {
+      color: var(--matcha);
+      text-shadow: none;
     }
 
     .arc-thumb {
@@ -374,28 +378,28 @@
       pointer-events: none;
     }
 
-    /* 페이지 번호 텍스트 영역 */
-    .arc-label {
-      padding: 10px 14px;
-      background: transparent;
+    /* 페이지 번호 — 이미지 좌하단 오버레이 */
+    .arc-overlay {
+      position: absolute;
+      bottom: 12px;
+      left: 14px;
+      pointer-events: none;
+      z-index: 1;
     }
 
     .arc-num {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 12px;
+      font-size: 13px;
       font-style: italic;
-      color: var(--dim);
+      color: rgba(255,255,255,0.92);
       letter-spacing: 0.08em;
       line-height: 1;
+      text-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
 
     /* 피처드 아이템 번호 */
-    .arc-item:first-child .arc-label {
-      padding: 12px 16px;
-    }
-
     .arc-item:first-child .arc-num {
-      font-size: 14px;
+      font-size: 16px;
     }
 
     /* 더 보기 버튼 */
@@ -694,9 +698,9 @@
       <a href="archive/16.html" class="arc-item fi">
         <div class="arc-thumb video">
           <img src="archive/media/16/02.jpeg" alt="p.16" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.16</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.16</span>
+          </div>
         </div>
       </a>
 
@@ -704,9 +708,9 @@
       <a href="archive/15.html" class="arc-item fi matcha">
         <div class="arc-thumb">
           <img src="archive/media/15/01.jpeg" alt="p.15" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.15</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.15</span>
+          </div>
         </div>
       </a>
 
@@ -714,9 +718,9 @@
       <a href="archive/14.html" class="arc-item fi">
         <div class="arc-thumb video">
           <img src="archive/media/14/01.jpeg" alt="p.14" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.14</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.14</span>
+          </div>
         </div>
       </a>
 
@@ -724,9 +728,9 @@
       <a href="archive/13.html" class="arc-item fi">
         <div class="arc-thumb multi">
           <img src="archive/media/13/01.jpeg" alt="p.13" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.13</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.13</span>
+          </div>
         </div>
       </a>
 
@@ -734,9 +738,9 @@
       <a href="archive/12.html" class="arc-item fi matcha">
         <div class="arc-thumb multi">
           <img src="archive/media/12/01.jpeg" alt="p.12" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.12</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.12</span>
+          </div>
         </div>
       </a>
 
@@ -744,9 +748,9 @@
       <a href="archive/11.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/11/01.jpeg" alt="p.11" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.11</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.11</span>
+          </div>
         </div>
       </a>
 
@@ -754,9 +758,9 @@
       <a href="archive/10.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/10/01.jpeg" alt="p.10" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.10</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.10</span>
+          </div>
         </div>
       </a>
 
@@ -764,9 +768,9 @@
       <a href="archive/09.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/09/01.jpeg" alt="p.09" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.09</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.09</span>
+          </div>
         </div>
       </a>
 
@@ -774,9 +778,9 @@
       <a href="archive/08.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/08/01.jpeg" alt="p.08" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.08</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.08</span>
+          </div>
         </div>
       </a>
 
@@ -784,9 +788,9 @@
       <a href="archive/07.html" class="arc-item fi hidden matcha">
         <div class="arc-thumb">
           <img src="archive/media/07/01.jpeg" alt="p.07" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.07</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.07</span>
+          </div>
         </div>
       </a>
 
@@ -794,9 +798,9 @@
       <a href="archive/06.html" class="arc-item fi hidden">
         <div class="arc-thumb video">
           <img src="archive/media/06/01.jpeg" alt="p.06" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.06</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.06</span>
+          </div>
         </div>
       </a>
 
@@ -804,9 +808,9 @@
       <a href="archive/05.html" class="arc-item fi hidden">
         <div class="arc-thumb">
           <img src="archive/media/05/01.jpeg" alt="p.05" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.05</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.05</span>
+          </div>
         </div>
       </a>
 
@@ -814,9 +818,9 @@
       <a href="archive/04.html" class="arc-item fi hidden">
         <div class="arc-thumb video">
           <img src="archive/media/04/01.jpeg" alt="p.04" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.04</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.04</span>
+          </div>
         </div>
       </a>
 
@@ -824,9 +828,9 @@
       <a href="archive/03.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/03/01.jpeg" alt="p.03" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.03</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.03</span>
+          </div>
         </div>
       </a>
 
@@ -834,9 +838,9 @@
       <a href="archive/02.html" class="arc-item fi hidden">
         <div class="arc-thumb">
           <img src="archive/media/02/01.jpeg" alt="p.02" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.02</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.02</span>
+          </div>
         </div>
       </a>
 
@@ -844,9 +848,9 @@
       <a href="archive/01.html" class="arc-item fi hidden matcha">
         <div class="arc-thumb video">
           <img src="archive/media/01/01.jpeg" alt="p.01" loading="lazy">
-        </div>
-        <div class="arc-label">
-          <span class="arc-num">p.01</span>
+          <div class="arc-overlay">
+            <span class="arc-num">p.01</span>
+          </div>
         </div>
       </a>
 
