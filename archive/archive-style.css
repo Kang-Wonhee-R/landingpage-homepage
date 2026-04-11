@@ -1,13 +1,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg:    #F3F0EE;
-  --ink:   #221B19;
-  --dim:   #9A8F8C;
-  --line:  #CABFBC;
-  --rose:  #D4C8BE;
-  --soft:  #E8DFDB;
-  --max:   760px;
+  --bg:      #F3F0EE;
+  --ink:     #221B19;
+  --dim:     #9A8F8C;
+  --line:    #CABFBC;
+  --rose:    #D4C8BE;
+  --soft:    #E8DFDB;
+  --matcha:  #C7C7BB;
+  --max:     760px;
 }
 
 html { scroll-behavior: smooth; }
@@ -232,6 +233,27 @@ footer span {
   font-size: 11px;
   color: var(--dim);
   letter-spacing: 0.06em;
+}
+
+/* Tea 게시물 — matcha 테마 */
+body.tea nav {
+  background: var(--matcha);
+}
+
+body.tea .post-num {
+  color: #6e7a68;
+}
+
+body.tea .post-body {
+  border-top-color: #b0b0a4;
+}
+
+body.tea .post-nav {
+  border-top-color: #b0b0a4;
+}
+
+body.tea .post-nav a span:first-child {
+  color: #6e7a68;
 }
 
 @media (max-width: 600px) {
