@@ -296,125 +296,122 @@
       margin: 0 auto;
       padding: 0 40px;
       display: grid;
-      grid-template-columns: 1.4fr 1fr 1fr;
-      gap: 2px;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: 3px;
     }
 
-    /* 첫 번째 항목 — 세로로 2칸 */
+    /* 첫 번째 항목 — 세로 2칸 피처드 */
     .arc-item:first-child {
       grid-row: 1 / 3;
     }
 
     .arc-item:first-child .arc-thumb {
-      aspect-ratio: 3 / 4;
+      aspect-ratio: unset;
+      height: 100%;
+      min-height: 340px;
     }
 
     .arc-item {
-      background: var(--soft);
       overflow: hidden;
       cursor: pointer;
       position: relative;
-      transition: opacity 0.25s;
       text-decoration: none;
       color: inherit;
       display: block;
+      background: var(--line);
     }
-
-    .arc-item:hover { opacity: 0.82; }
 
     /* 숨겨진 아이템 */
     .arc-item.hidden {
       display: none;
     }
 
-    /* Tea 게시물 — matcha 배경 */
-    .arc-item.matcha {
-      background: var(--matcha);
+    /* 이미지 호버 줌 */
+    .arc-item:hover .arc-thumb img {
+      transform: scale(1.04);
+    }
+
+    /* Tea 게시물 — matcha 오버레이 */
+    .arc-item.matcha .arc-overlay {
+      background: linear-gradient(to top,
+        rgba(150,155,140,0.72) 0%,
+        rgba(150,155,140,0.12) 55%,
+        transparent 100%);
+    }
+
+    .arc-item.matcha .arc-num {
+      color: rgba(255,255,255,0.95);
     }
 
     .arc-thumb {
       width: 100%;
       aspect-ratio: 1 / 1;
-      background: var(--line);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       overflow: hidden;
       position: relative;
     }
 
-    .arc-thumb img,
-    .arc-thumb video {
+    .arc-thumb img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       display: block;
+      transition: transform 0.5s ease;
     }
 
-    .arc-thumb-ph {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--dim);
-    }
-
-    /* 영상 오버레이 */
-    .arc-thumb.video::after {
+    /* 영상 아이콘 */
+    .arc-thumb.video::before {
       content: '▶';
       position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 18px;
-      color: rgba(255,255,255,0.85);
+      top: 12px; right: 14px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.8);
+      z-index: 2;
       pointer-events: none;
     }
 
-    /* 멀티 이미지 표시 */
-    .arc-thumb.multi::after {
+    /* 멀티 이미지 아이콘 */
+    .arc-thumb.multi::before {
       content: '⊞';
       position: absolute;
-      top: 10px; right: 12px;
-      font-size: 13px;
-      color: rgba(255,255,255,0.85);
+      top: 11px; right: 13px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.8);
+      z-index: 2;
       pointer-events: none;
     }
 
-    .arc-body {
-      padding: 14px 18px 18px;
+    /* 페이지 번호 오버레이 */
+    .arc-overlay {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 40px 16px 14px;
+      background: linear-gradient(to top,
+        rgba(34,27,25,0.58) 0%,
+        rgba(34,27,25,0.08) 60%,
+        transparent 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .arc-tag {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 6px;
-    }
-
-    .arc-title {
+    .arc-num {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 14px;
-      font-weight: normal;
-      line-height: 1.5;
-      margin-bottom: 6px;
-    }
-
-    .arc-excerpt {
-      font-size: 12px;
-      color: var(--dim);
-      line-height: 1.75;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    .arc-date {
-      font-size: 11px;
-      color: var(--dim);
-      margin-top: 10px;
-      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 13px;
       font-style: italic;
+      color: rgba(255,255,255,0.92);
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    /* 피처드 아이템 번호 — 더 크게 */
+    .arc-item:first-child .arc-num {
+      font-size: 18px;
+    }
+
+    .arc-item:first-child .arc-overlay {
+      padding: 60px 20px 20px;
     }
 
     /* 더 보기 버튼 */
@@ -550,8 +547,9 @@
       .intro-inner { grid-template-columns: 1fr; gap: 24px; }
       .intro-left { display: none; }
 
-      .archive-grid { grid-template-columns: 1fr 1fr; }
+      .archive-grid { grid-template-columns: 1fr 1fr; gap: 2px; padding: 0 20px; }
       .arc-item:first-child { grid-row: auto; }
+      .arc-item:first-child .arc-thumb { aspect-ratio: 1 / 1; height: auto; min-height: unset; }
 
       .contact-row { flex-direction: column; gap: 24px; }
 
@@ -559,7 +557,7 @@
     }
 
     @media (max-width: 480px) {
-      .archive-grid { grid-template-columns: 1fr; }
+      .archive-grid { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
@@ -712,11 +710,9 @@
       <a href="archive/16.html" class="arc-item fi">
         <div class="arc-thumb video">
           <img src="archive/media/16/02.jpeg" alt="p.16" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.16</span>
+          </div>
         </div>
       </a>
 
@@ -724,11 +720,9 @@
       <a href="archive/15.html" class="arc-item fi matcha">
         <div class="arc-thumb">
           <img src="archive/media/15/01.jpeg" alt="p.15" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.15</span>
+          </div>
         </div>
       </a>
 
@@ -736,11 +730,9 @@
       <a href="archive/14.html" class="arc-item fi">
         <div class="arc-thumb video">
           <img src="archive/media/14/01.jpeg" alt="p.14" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.14</span>
+          </div>
         </div>
       </a>
 
@@ -748,11 +740,9 @@
       <a href="archive/13.html" class="arc-item fi">
         <div class="arc-thumb multi">
           <img src="archive/media/13/01.jpeg" alt="p.13" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.13</span>
+          </div>
         </div>
       </a>
 
@@ -760,11 +750,9 @@
       <a href="archive/12.html" class="arc-item fi matcha">
         <div class="arc-thumb multi">
           <img src="archive/media/12/01.jpeg" alt="p.12" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.12</span>
+          </div>
         </div>
       </a>
 
@@ -772,11 +760,9 @@
       <a href="archive/11.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/11/01.jpeg" alt="p.11" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.11</span>
+          </div>
         </div>
       </a>
 
@@ -784,11 +770,9 @@
       <a href="archive/10.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/10/01.jpeg" alt="p.10" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.10</span>
+          </div>
         </div>
       </a>
 
@@ -796,11 +780,9 @@
       <a href="archive/09.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/09/01.jpeg" alt="p.09" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.09</span>
+          </div>
         </div>
       </a>
 
@@ -808,11 +790,9 @@
       <a href="archive/08.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/08/01.jpeg" alt="p.08" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.08</span>
+          </div>
         </div>
       </a>
 
@@ -820,11 +800,9 @@
       <a href="archive/07.html" class="arc-item fi hidden matcha">
         <div class="arc-thumb">
           <img src="archive/media/07/01.jpeg" alt="p.07" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.07</span>
+          </div>
         </div>
       </a>
 
@@ -832,11 +810,9 @@
       <a href="archive/06.html" class="arc-item fi hidden">
         <div class="arc-thumb video">
           <img src="archive/media/06/01.jpeg" alt="p.06" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.06</span>
+          </div>
         </div>
       </a>
 
@@ -844,11 +820,9 @@
       <a href="archive/05.html" class="arc-item fi hidden">
         <div class="arc-thumb">
           <img src="archive/media/05/01.jpeg" alt="p.05" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.05</span>
+          </div>
         </div>
       </a>
 
@@ -856,11 +830,9 @@
       <a href="archive/04.html" class="arc-item fi hidden">
         <div class="arc-thumb video">
           <img src="archive/media/04/01.jpeg" alt="p.04" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.04</span>
+          </div>
         </div>
       </a>
 
@@ -868,11 +840,9 @@
       <a href="archive/03.html" class="arc-item fi hidden">
         <div class="arc-thumb multi">
           <img src="archive/media/03/01.jpeg" alt="p.03" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.03</span>
+          </div>
         </div>
       </a>
 
@@ -880,11 +850,9 @@
       <a href="archive/02.html" class="arc-item fi hidden">
         <div class="arc-thumb">
           <img src="archive/media/02/01.jpeg" alt="p.02" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.02</span>
+          </div>
         </div>
       </a>
 
@@ -892,11 +860,9 @@
       <a href="archive/01.html" class="arc-item fi hidden matcha">
         <div class="arc-thumb video">
           <img src="archive/media/01/01.jpeg" alt="p.01" loading="lazy">
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">—</p>
-          <h4 class="arc-title">—</h4>
-          <p class="arc-date">—</p>
+          <div class="arc-overlay">
+            <span class="arc-num">p.01</span>
+          </div>
         </div>
       </a>
 
