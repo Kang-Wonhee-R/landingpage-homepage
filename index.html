@@ -518,49 +518,144 @@
 
     .fi.on { opacity: 1; transform: none; }
 
+    /* ── 햄버거 버튼 (기본 숨김) ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 1px;
+      background: var(--ink);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+
+    /* 열렸을 때 X 모양 */
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* 모바일 오버레이 */
+    .nav-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 98;
+      background: rgba(34,27,25,0.18);
+    }
+
+    .nav-overlay.open { display: block; }
+
     /* ── MOBILE ── */
     @media (max-width: 720px) {
-      nav { padding: 16px 20px; }
 
+      /* Nav */
+      nav {
+        padding: 16px 20px;
+        mix-blend-mode: normal;
+        background: var(--bg);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-hamburger { display: flex; }
+
+      .nav-links {
+        display: none;
+        position: fixed;
+        top: 53px; left: 0; right: 0;
+        z-index: 99;
+        background: var(--bg);
+        flex-direction: column;
+        padding: 24px 20px 32px;
+        gap: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links a {
+        font-size: 14px;
+        letter-spacing: 0.1em;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--line);
+        color: var(--ink);
+      }
+
+      .nav-links a:last-child { border-bottom: none; }
+
+      /* Hero */
       #hero { padding: 0 20px 56px; }
 
-      #intro, #portfolio, #archive, #contact { padding-left: 20px; padding-right: 20px; }
+      .hero-name { font-size: clamp(48px, 14vw, 80px); }
 
-      #portfolio { padding: 72px 0 80px; }
-      .portfolio-header { padding: 0 20px; }
-      .pf-item { padding: 0 20px; grid-template-columns: 1fr; }
-      .pf-thumb { width: 100%; }
-      .pf-info { padding: 20px 0 24px; border-left: none; border-top: 1px solid var(--line); }
+      /* Sections */
+      #intro, #contact { padding-left: 20px; padding-right: 20px; }
 
       .intro-inner { grid-template-columns: 1fr; gap: 24px; }
       .intro-left { display: none; }
+      .intro-text p { font-size: 15px; }
 
+      /* Portfolio */
+      #portfolio { padding: 64px 0 72px; }
+      .portfolio-header { padding: 0 20px; }
+      .pf-item { padding: 0 20px; grid-template-columns: 1fr; }
+      .pf-thumb { width: 100%; height: 180px; }
+      .pf-info { padding: 20px 0 24px; border-left: none; border-top: 1px solid var(--line); }
+
+      /* Archive */
+      #archive { padding: 64px 0 72px; }
+      .archive-header { padding: 0 20px; }
       .archive-grid { grid-template-columns: 1fr 1fr; gap: 2px; padding: 0 20px; }
       .arc-item:first-child { grid-row: auto; }
       .arc-item:first-child .arc-thumb { aspect-ratio: 1 / 1; height: auto; min-height: unset; }
+      .archive-more { padding: 28px 20px 0; }
+      .btn-more { padding: 13px 32px; font-size: 12px; width: 100%; justify-content: center; }
 
-      .contact-row { flex-direction: column; gap: 24px; }
+      /* Contact */
+      .contact-row { flex-direction: column; gap: 20px; }
+      .c-link span:last-child { font-size: 14px; }
 
-      footer { flex-direction: column; gap: 6px; }
+      /* Footer */
+      footer { padding: 18px 20px; flex-direction: column; gap: 6px; }
     }
 
     @media (max-width: 480px) {
+      /* 아주 작은 화면에서도 2열 유지 */
       .archive-grid { grid-template-columns: 1fr 1fr; }
+
+      .hero-name { font-size: clamp(42px, 13vw, 64px); }
     }
   </style>
 </head>
 <body>
 
   <!-- NAV -->
-  <nav>
+  <nav id="mainNav">
     <a href="#hero" class="nav-logo">Atmosphere.note</a>
-    <div class="nav-links">
-      <a href="#intro">About</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#archive">Archive</a>
-      <a href="#contact">Contact</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#intro" onclick="closeNav()">About</a>
+      <a href="#portfolio" onclick="closeNav()">Portfolio</a>
+      <a href="#archive" onclick="closeNav()">Archive</a>
+      <a href="#contact" onclick="closeNav()">Contact</a>
     </div>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="메뉴">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
   </nav>
+  <!-- 모바일 메뉴 오버레이 -->
+  <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
 
   <!-- HERO -->
   <section id="hero">
@@ -896,6 +991,25 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script>
+    // 모바일 Nav 토글
+    function toggleNav() {
+      const links = document.getElementById('navLinks');
+      const btn   = document.getElementById('navHamburger');
+      const overlay = document.getElementById('navOverlay');
+      const isOpen = links.classList.contains('open');
+      links.classList.toggle('open', !isOpen);
+      btn.classList.toggle('open', !isOpen);
+      overlay.classList.toggle('open', !isOpen);
+      document.body.style.overflow = isOpen ? '' : 'hidden';
+    }
+
+    function closeNav() {
+      document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('navHamburger').classList.remove('open');
+      document.getElementById('navOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
     // 스크롤 페이드인
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
