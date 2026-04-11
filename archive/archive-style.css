@@ -235,26 +235,6 @@ footer span {
   letter-spacing: 0.06em;
 }
 
-/* Tea 게시물 — matcha 테마 */
-body.tea nav {
-  background: var(--matcha);
-}
-
-body.tea .post-num {
-  color: #6e7a68;
-}
-
-body.tea .post-body {
-  border-top-color: #b0b0a4;
-}
-
-body.tea .post-nav {
-  border-top-color: #b0b0a4;
-}
-
-body.tea .post-nav a span:first-child {
-  color: #6e7a68;
-}
 
 @media (max-width: 600px) {
   nav, main { padding-left: 20px; padding-right: 20px; }
