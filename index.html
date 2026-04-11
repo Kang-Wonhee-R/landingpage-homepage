@@ -297,7 +297,6 @@
       padding: 0 40px;
       display: grid;
       grid-template-columns: 1.4fr 1fr 1fr;
-      grid-template-rows: auto auto;
       gap: 2px;
     }
 
@@ -306,15 +305,27 @@
       grid-row: 1 / 3;
     }
 
+    .arc-item:first-child .arc-thumb {
+      aspect-ratio: 3 / 4;
+    }
+
     .arc-item {
       background: var(--soft);
       overflow: hidden;
       cursor: pointer;
       position: relative;
       transition: opacity 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
-    .arc-item:hover { opacity: 0.85; }
+    .arc-item:hover { opacity: 0.82; }
+
+    /* 숨겨진 아이템 */
+    .arc-item.hidden {
+      display: none;
+    }
 
     .arc-thumb {
       width: 100%;
@@ -323,14 +334,17 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      overflow: hidden;
+      position: relative;
     }
 
-    /* 첫 번째 항목은 더 긴 비율 */
-    .arc-item:first-child .arc-thumb {
-      aspect-ratio: 3 / 4;
+    .arc-thumb img,
+    .arc-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
-
-    .arc-thumb img { width: 100%; height: 100%; object-fit: cover; }
 
     .arc-thumb-ph {
       font-size: 10px;
@@ -339,27 +353,29 @@
       color: var(--dim);
     }
 
-    /* 영상 표시 */
+    /* 영상 오버레이 */
     .arc-thumb.video::after {
       content: '▶';
       position: absolute;
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       font-size: 18px;
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.85);
       pointer-events: none;
     }
 
-    /* 에세이 — 이미지 없이 텍스트만 */
-    .arc-item.essay {
-      background: var(--bg);
-      border: 1px solid var(--line);
+    /* 멀티 이미지 표시 */
+    .arc-thumb.multi::after {
+      content: '⊞';
+      position: absolute;
+      top: 10px; right: 12px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.85);
+      pointer-events: none;
     }
 
-    .arc-item.essay .arc-thumb { display: none; }
-
     .arc-body {
-      padding: 16px 20px 20px;
+      padding: 14px 18px 18px;
     }
 
     .arc-tag {
@@ -367,7 +383,7 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--rose);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .arc-title {
@@ -375,7 +391,7 @@
       font-size: 14px;
       font-weight: normal;
       line-height: 1.5;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .arc-excerpt {
@@ -383,7 +399,7 @@
       color: var(--dim);
       line-height: 1.75;
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
     }
@@ -391,9 +407,46 @@
     .arc-date {
       font-size: 11px;
       color: var(--dim);
-      margin-top: 12px;
+      margin-top: 10px;
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-style: italic;
+    }
+
+    /* 더 보기 버튼 */
+    .archive-more {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 36px 40px 0;
+      text-align: center;
+    }
+
+    .btn-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: var(--dim);
+      background: none;
+      border: 1px solid var(--line);
+      padding: 10px 28px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      font-family: 'Jost', sans-serif;
+    }
+
+    .btn-more:hover {
+      border-color: var(--rose);
+      color: var(--ink);
+    }
+
+    .btn-more .btn-icon {
+      font-size: 14px;
+      transition: transform 0.3s;
+    }
+
+    .btn-more.open .btn-icon {
+      transform: rotate(180deg);
     }
 
     /* ── CONTACT ── */
@@ -648,67 +701,210 @@
       <p>Field notes on atmosphere</p>
     </div>
 
-    <div class="archive-grid">
+    <div class="archive-grid" id="archiveGrid">
 
-      <!-- 피처드 — 큰 사진 -->
-      <div class="arc-item fi">
-        <div class="arc-thumb">
-          <span class="arc-thumb-ph">Photo</span>
-        </div>
-        <div class="arc-body">
-          <p class="arc-tag">공간</p>
-          <h4 class="arc-title">사진 제목을 여기에 씁니다</h4>
-          <p class="arc-date">2024. 12</p>
-        </div>
-      </div>
-
-      <!-- 에세이 -->
-      <div class="arc-item essay fi" style="background: var(--matcha);">
-        <div class="arc-body">
-          <p class="arc-tag">에세이 · 차</p>
-          <h4 class="arc-title">차 한 잔의 시간에 대하여</h4>
-          <p class="arc-excerpt">뜨거운 물이 찻잎 위로 천천히 내려앉는 동안, 잠깐의 침묵이 생긴다.
-            그 침묵이 좋다. 아무것도 하지 않아도 되는 2분.</p>
-          <p class="arc-date">2024. 11</p>
-        </div>
-      </div>
-
-      <!-- 영상 -->
-      <div class="arc-item fi" style="position:relative;">
+      <!-- p.16 -->
+      <a href="archive/16.html" class="arc-item fi">
         <div class="arc-thumb video">
-          <span class="arc-thumb-ph">Video</span>
+          <img src="archive/media/16/02.jpeg" alt="p.16" loading="lazy">
         </div>
         <div class="arc-body">
-          <p class="arc-tag">산책</p>
-          <h4 class="arc-title">영상 제목을 여기에 씁니다</h4>
-          <p class="arc-date">2024. 11</p>
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
         </div>
-      </div>
+      </a>
 
-      <!-- 사진 -->
-      <div class="arc-item fi">
+      <!-- p.15 -->
+      <a href="archive/15.html" class="arc-item fi">
         <div class="arc-thumb">
-          <span class="arc-thumb-ph">Photo</span>
+          <img src="archive/media/15/01.jpeg" alt="p.15" loading="lazy">
         </div>
         <div class="arc-body">
-          <p class="arc-tag">공간</p>
-          <h4 class="arc-title">사진 제목을 여기에 씁니다</h4>
-          <p class="arc-date">2024. 10</p>
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
         </div>
-      </div>
+      </a>
 
-      <!-- 에세이 -->
-      <div class="arc-item essay fi">
-        <div class="arc-body">
-          <p class="arc-tag">에세이 · 산책</p>
-          <h4 class="arc-title">걷는 속도에 대해</h4>
-          <p class="arc-excerpt">서울의 골목을 천천히 걷다 보면 도시가 다른 방식으로 읽힌다.
-            속도를 낮추면 비로소 보이는 것들.</p>
-          <p class="arc-date">2024. 10</p>
+      <!-- p.14 -->
+      <a href="archive/14.html" class="arc-item fi">
+        <div class="arc-thumb video">
+          <img src="archive/media/14/01.jpeg" alt="p.14" loading="lazy">
         </div>
-      </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.13 -->
+      <a href="archive/13.html" class="arc-item fi">
+        <div class="arc-thumb multi">
+          <img src="archive/media/13/01.jpeg" alt="p.13" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.12 -->
+      <a href="archive/12.html" class="arc-item fi">
+        <div class="arc-thumb multi">
+          <img src="archive/media/12/01.jpeg" alt="p.12" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.11 -->
+      <a href="archive/11.html" class="arc-item fi hidden">
+        <div class="arc-thumb multi">
+          <img src="archive/media/11/01.jpeg" alt="p.11" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.10 -->
+      <a href="archive/10.html" class="arc-item fi hidden">
+        <div class="arc-thumb multi">
+          <img src="archive/media/10/01.jpeg" alt="p.10" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.09 -->
+      <a href="archive/09.html" class="arc-item fi hidden">
+        <div class="arc-thumb multi">
+          <img src="archive/media/09/01.jpeg" alt="p.09" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.08 -->
+      <a href="archive/08.html" class="arc-item fi hidden">
+        <div class="arc-thumb multi">
+          <img src="archive/media/08/01.jpeg" alt="p.08" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.07 -->
+      <a href="archive/07.html" class="arc-item fi hidden">
+        <div class="arc-thumb">
+          <img src="archive/media/07/01.jpeg" alt="p.07" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.06 -->
+      <a href="archive/06.html" class="arc-item fi hidden">
+        <div class="arc-thumb video">
+          <img src="archive/media/06/01.jpeg" alt="p.06" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.05 -->
+      <a href="archive/05.html" class="arc-item fi hidden">
+        <div class="arc-thumb">
+          <img src="archive/media/05/01.jpeg" alt="p.05" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.04 -->
+      <a href="archive/04.html" class="arc-item fi hidden">
+        <div class="arc-thumb video">
+          <img src="archive/media/04/01.jpeg" alt="p.04" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.03 -->
+      <a href="archive/03.html" class="arc-item fi hidden">
+        <div class="arc-thumb multi">
+          <img src="archive/media/03/01.jpeg" alt="p.03" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.02 -->
+      <a href="archive/02.html" class="arc-item fi hidden">
+        <div class="arc-thumb">
+          <img src="archive/media/02/01.jpeg" alt="p.02" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
+
+      <!-- p.01 -->
+      <a href="archive/01.html" class="arc-item fi hidden">
+        <div class="arc-thumb video">
+          <img src="archive/media/01/01.jpeg" alt="p.01" loading="lazy">
+        </div>
+        <div class="arc-body">
+          <p class="arc-tag">—</p>
+          <h4 class="arc-title">—</h4>
+          <p class="arc-date">—</p>
+        </div>
+      </a>
 
     </div>
+
+    <!-- 더 보기 버튼 -->
+    <div class="archive-more fi">
+      <button class="btn-more" id="btnMore" onclick="toggleArchive()">
+        <span>더 보기 (11)</span>
+        <span class="btn-icon">∨</span>
+      </button>
+    </div>
+
   </section>
 
   <!-- CONTACT -->
@@ -795,6 +991,34 @@
       if (entries[0].isIntersecting) { renderThumbs(); pfObserver.disconnect(); }
     }, { threshold: 0.05 });
     if (pfSection) pfObserver.observe(pfSection);
+
+    // Archive 더 보기 / 접기
+    function toggleArchive() {
+      const hidden = document.querySelectorAll('#archiveGrid .arc-item.hidden');
+      const btn = document.getElementById('btnMore');
+      const isOpen = btn.classList.contains('open');
+
+      if (isOpen) {
+        // 접기 — p.06부터 숨기기
+        document.querySelectorAll('#archiveGrid .arc-item').forEach((el, idx) => {
+          if (idx >= 5) { el.classList.add('hidden'); el.style.display = 'none'; }
+        });
+        btn.classList.remove('open');
+        btn.querySelector('span:first-child').textContent = '더 보기 (11)';
+        document.getElementById('archive').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        // 펼치기
+        document.querySelectorAll('#archiveGrid .arc-item').forEach(el => {
+          el.classList.remove('hidden');
+          el.style.display = '';
+        });
+        btn.classList.add('open');
+        btn.querySelector('span:first-child').textContent = '접기';
+        document.querySelectorAll('#archiveGrid .arc-item:not(.on)').forEach(el => {
+          io.observe(el);
+        });
+      }
+    }
   </script>
 
 

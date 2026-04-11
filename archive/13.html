@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>p.13 — Archive · Atmosphere.note</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="archive-style.css">
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html" class="nav-logo">Atmosphere.note</a>
+    <a href="../index.html#archive" class="nav-back">← Archive</a>
+  </nav>
+
+  <main>
+
+    <div class="post-meta">
+      <span class="post-num">p.13</span>
+      <span class="post-tag">—</span>
+    </div>
+
+    <h1 class="post-title">—</h1>
+    <p class="post-date">—</p>
+
+    <div class="media-carousel" id="carousel">
+      <div class="carousel-track" id="carouselTrack">
+          <img src="../archive/media/13/01.jpeg" alt="">
+          <img src="../archive/media/13/02.jpeg" alt="">
+      </div>
+    </div>
+    <div class="carousel-controls">
+      <button class="carousel-btn" onclick="moveCarousel(-1)">←</button>
+      <span class="carousel-count" id="carouselCount">1 / 2</span>
+      <button class="carousel-btn" onclick="moveCarousel(1)">→</button>
+    </div>
+
+    <div class="post-body">
+      <p class="caption-placeholder">글이 아직 등록되지 않았습니다.</p>
+    </div>
+
+    <nav class="post-nav">
+      <a href="12.html" class="prev"><span>Prev</span><span>← p.12</span></a>
+      <a href="14.html" class="next"><span>Next</span><span>p.14 →</span></a>
+    </nav>
+
+  </main>
+
+  <footer>
+    <span>© 2026 Kang Wonhee</span>
+    <span>Atmosphere.note</span>
+  </footer>
+
+  <script>
+    let currentSlide = 0;
+    function moveCarousel(dir) {
+      const track = document.getElementById('carouselTrack');
+      if (!track) return;
+      const total = track.children.length;
+      currentSlide = (currentSlide + dir + total) % total;
+      track.style.transform = `translateX(-${currentSlide * 100}%)`;
+      const count = document.getElementById('carouselCount');
+      if (count) count.textContent = `${currentSlide + 1} / ${total}`;
+    }
+  </script>
+
+</body>
+</html>
