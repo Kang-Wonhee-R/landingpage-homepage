@@ -841,7 +841,7 @@
       </a>
 
       <!-- p.11 -->
-      <a href="archive/11.html" class="arc-item fi hidden">
+      <a href="archive/11.html" class="arc-item fi">
         <div class="arc-thumb multi">
           <img src="archive/media/11/01.jpeg" alt="Archive p.11 썸네일" loading="lazy">
           <div class="arc-overlay">
@@ -1080,6 +1080,20 @@
     if (pfSection) pfObserver.observe(pfSection);
 
     // Archive 더 보기 / 접기
+    // 모바일(≤768px): 6개 표시, 데스크탑: 5개 표시
+    function archiveThreshold() { return window.innerWidth <= 768 ? 6 : 5; }
+
+    function initArchive() {
+      const t = archiveThreshold();
+      const items = document.querySelectorAll('#archiveGrid .arc-item');
+      items.forEach((el, idx) => {
+        if (idx >= t) { el.classList.add('hidden'); el.style.display = 'none'; }
+        else          { el.classList.remove('hidden'); el.style.display = ''; }
+      });
+      document.querySelector('#btnMore span:first-child').textContent = `더 보기 (${items.length - t})`;
+    }
+    initArchive();
+
     let _archiveToggling = false;
     function toggleArchive() {
       if (_archiveToggling) return;
@@ -1088,26 +1102,23 @@
 
       const btn = document.getElementById('btnMore');
       const isOpen = btn.classList.contains('open');
+      const t = archiveThreshold();
+      const items = document.querySelectorAll('#archiveGrid .arc-item');
 
       if (isOpen) {
-        // 접기 — p.06부터 숨기기
-        document.querySelectorAll('#archiveGrid .arc-item').forEach((el, idx) => {
-          if (idx >= 5) { el.classList.add('hidden'); el.style.display = 'none'; }
+        // 접기
+        items.forEach((el, idx) => {
+          if (idx >= t) { el.classList.add('hidden'); el.style.display = 'none'; }
         });
         btn.classList.remove('open');
-        btn.querySelector('span:first-child').textContent = '더 보기 (11)';
+        btn.querySelector('span:first-child').textContent = `더 보기 (${items.length - t})`;
         document.getElementById('archive').scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
         // 펼치기
-        document.querySelectorAll('#archiveGrid .arc-item').forEach(el => {
-          el.classList.remove('hidden');
-          el.style.display = '';
-        });
+        items.forEach(el => { el.classList.remove('hidden'); el.style.display = ''; });
         btn.classList.add('open');
         btn.querySelector('span:first-child').textContent = '접기';
-        document.querySelectorAll('#archiveGrid .arc-item:not(.on)').forEach(el => {
-          io.observe(el);
-        });
+        document.querySelectorAll('#archiveGrid .arc-item:not(.on)').forEach(el => { io.observe(el); });
       }
     }
   </script>
