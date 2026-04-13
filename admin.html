@@ -179,12 +179,23 @@
 </div>
 
 <script>
-  const PASSWORD = '00regina*';
+  // 비밀번호는 SHA-256 해시로만 저장합니다 (평문 저장 금지)
+  // 비밀번호 변경 방법: 터미널에서 아래 명령 실행 후 이 값을 교체하세요
+  // printf '%s' '새비밀번호' | openssl dgst -sha256 -hex | sed 's/.*= //'
+  const PASSWORD_HASH = 'd888c432bc0230f6cf5c3c45b6c6597526f5fcb92916ded459f08a50efc37fee';
+
+  async function hashPassword(pw) {
+    const enc = new TextEncoder();
+    const buf = await crypto.subtle.digest('SHA-256', enc.encode(pw));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
 
   // ── 로그인 ──
-  function checkLogin() {
+  async function checkLogin() {
     const val = document.getElementById('pw-input').value;
-    if (val === PASSWORD) {
+    if (!val) return;
+    const hash = await hashPassword(val);
+    if (hash === PASSWORD_HASH) {
       document.getElementById('login-screen').style.display = 'none';
       document.getElementById('admin-screen').style.display = 'block';
       loadContent();
@@ -247,42 +258,66 @@
   }
 
   // Archive
-  const arcTypes = ['공간 (사진)', '에세이 · 차', '산책 (영상)', '공간 (사진) 2', '에세이 · 산책'];
+  const arcTypes = [
+    '공간 (사진)', '에세이 · 차', '산책 (영상)', '공간 (사진) 2', '에세이 · 산책',
+    '–', '–', '–', '–', '–', '–', '–', '–', '–', '–', '–'
+  ];
+
+  function makeField(labelText, tag, attrs = {}) {
+    const group = document.createElement('div');
+    group.className = 'field-group';
+    group.style.marginBottom = '0';
+    const lbl = document.createElement('label');
+    lbl.textContent = labelText;
+    const el = document.createElement(tag);
+    Object.entries(attrs).forEach(([k, v]) => { if (k === 'value') el.value = v; else el.setAttribute(k, v); });
+    group.appendChild(lbl);
+    group.appendChild(el);
+    return { group, el };
+  }
+
   function loadArchive() {
     const items = currentDoc.querySelectorAll('.arc-item');
     const container = document.getElementById('archive-editor');
     container.innerHTML = '';
 
     items.forEach((item, i) => {
-      const tag = item.querySelector('.arc-tag')?.textContent.trim() || '';
-      const title = item.querySelector('.arc-title')?.textContent.trim() || '';
-      const excerpt = item.querySelector('.arc-excerpt')?.textContent.trim() || '';
-      const date = item.querySelector('.arc-date')?.textContent.trim() || '';
+      const tag     = item.querySelector('.arc-tag')?.textContent.trim()    || '';
+      const title   = item.querySelector('.arc-title')?.textContent.trim()  || '';
+      const excerpt = item.querySelector('.arc-excerpt')?.textContent.trim()|| '';
+      const date    = item.querySelector('.arc-date')?.textContent.trim()   || '';
 
       const card = document.createElement('div');
       card.className = 'arc-card';
-      card.innerHTML = `
-        <p class="arc-card-header">항목 ${i+1} — ${arcTypes[i] || ''}</p>
-        <div class="arc-card-grid">
-          <div class="field-group" style="margin-bottom:0;">
-            <label>태그</label>
-            <input type="text" id="arc-${i}-tag" value="${tag}" />
-          </div>
-          <div class="field-group" style="margin-bottom:0;">
-            <label>제목</label>
-            <input type="text" id="arc-${i}-title" value="${title}" />
-          </div>
-          <div class="field-group" style="margin-bottom:0;">
-            <label>날짜</label>
-            <input type="text" id="arc-${i}-date" value="${date}" placeholder="2025. 04" />
-          </div>
-        </div>
-        ${excerpt ? `
-        <div class="field-group" style="margin-bottom:0;">
-          <label>본문 (에세이)</label>
-          <textarea id="arc-${i}-excerpt" rows="2">${excerpt}</textarea>
-        </div>` : `<input type="hidden" id="arc-${i}-excerpt" value="" />`}
-      `;
+
+      const header = document.createElement('p');
+      header.className = 'arc-card-header';
+      header.textContent = `항목 ${i+1} — ${arcTypes[i] || '–'}`;
+      card.appendChild(header);
+
+      const grid = document.createElement('div');
+      grid.className = 'arc-card-grid';
+
+      const { group: tagGroup, el: tagEl }     = makeField('태그',  'input', { type:'text', id:`arc-${i}-tag`,   value: tag });
+      const { group: titleGroup, el: titleEl } = makeField('제목',  'input', { type:'text', id:`arc-${i}-title`, value: title });
+      const { group: dateGroup, el: dateEl }   = makeField('날짜',  'input', { type:'text', id:`arc-${i}-date`,  value: date, placeholder:'2025. 04' });
+      grid.appendChild(tagGroup);
+      grid.appendChild(titleGroup);
+      grid.appendChild(dateGroup);
+      card.appendChild(grid);
+
+      if (excerpt) {
+        const { group: exGroup, el: exEl } = makeField('본문 (에세이)', 'textarea', { id:`arc-${i}-excerpt`, rows:'2' });
+        exEl.value = excerpt;
+        card.appendChild(exGroup);
+      } else {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.id = `arc-${i}-excerpt`;
+        hidden.value = '';
+        card.appendChild(hidden);
+      }
+
       container.appendChild(card);
     });
   }
@@ -292,9 +327,14 @@
     const links = currentDoc.querySelectorAll('.c-link');
     links.forEach(link => {
       const label = link.querySelector('span:first-child')?.textContent.trim().toLowerCase();
+      // 이메일: data-u / data-d 속성에서 읽기 (em-link 방식)
+      const u = link.dataset.u || '';
+      const d = link.dataset.d || '';
+      const emailVal = u && d ? u + '@' + d : (link.querySelector('.em-addr')?.textContent.trim() || '');
+      // Instagram: span:last-child 텍스트에서 읽기
       const val = link.querySelector('span:last-child')?.textContent.trim();
-      if (label === 'email') document.getElementById('contact-email').value = val || '';
-      if (label === 'gmail') document.getElementById('contact-gmail').value = val || '';
+      if (label === 'email') document.getElementById('contact-email').value = emailVal || val || '';
+      if (label === 'gmail') document.getElementById('contact-gmail').value = emailVal || val || '';
       if (label === 'instagram') document.getElementById('contact-instagram').value = val || '';
     });
   }
@@ -311,12 +351,16 @@
     if (paras[1]) {
       const h = document.getElementById('about-p2-highlight').value;
       const r = document.getElementById('about-p2-rest').value;
-      paras[1].innerHTML = h ? `<span>${h}</span> ${r}` : r;
+      paras[1].textContent = '';
+      if (h) { const s = doc.createElement('span'); s.textContent = h; paras[1].appendChild(s); paras[1].appendChild(doc.createTextNode(' ' + r)); }
+      else { paras[1].textContent = r; }
     }
     if (paras[2]) {
       const h = document.getElementById('about-p3-highlight').value;
       const r = document.getElementById('about-p3-rest').value;
-      paras[2].innerHTML = h ? `<span>${h}</span> ${r}` : r;
+      paras[2].textContent = '';
+      if (h) { const s = doc.createElement('span'); s.textContent = h; paras[2].appendChild(s); paras[2].appendChild(doc.createTextNode(' ' + r)); }
+      else { paras[2].textContent = r; }
     }
 
     // Archive
@@ -339,13 +383,19 @@
       const valSpan = link.querySelector('span:last-child');
       if (label === 'email') {
         const v = document.getElementById('contact-email').value;
-        if (valSpan) valSpan.textContent = v;
-        link.href = 'mailto:' + v;
+        const parts = v.split('@');
+        link.dataset.u = parts[0] || '';
+        link.dataset.d = parts[1] || '';
+        if (valSpan) valSpan.className = 'em-addr';
+        link.href = '#';
       }
       if (label === 'gmail') {
         const v = document.getElementById('contact-gmail').value;
-        if (valSpan) valSpan.textContent = v;
-        link.href = 'mailto:' + v;
+        const parts = v.split('@');
+        link.dataset.u = parts[0] || '';
+        link.dataset.d = parts[1] || '';
+        if (valSpan) valSpan.className = 'em-addr';
+        link.href = '#';
       }
       if (label === 'instagram') {
         const v = document.getElementById('contact-instagram').value;
