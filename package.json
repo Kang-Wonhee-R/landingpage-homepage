@@ -1,0 +1,29 @@
+{
+  "name": "atmosphere-note-admin",
+  "version": "1.0.0",
+  "description": "Atmosphere.note 관리자 앱",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.atmosphere.note.admin",
+    "productName": "Atmosphere Admin",
+    "mac": {
+      "target": "dir"
+    },
+    "files": [
+      "main.js",
+      "admin.html",
+      "index.html",
+      "assets/**",
+      "archive/**",
+      "projects/**"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.0.0"
+  }
+}
