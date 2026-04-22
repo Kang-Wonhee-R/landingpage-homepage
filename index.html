@@ -3,14 +3,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Atmosphere.note — Kang Wonhee</title>
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) — consent mode 초기화는 gtag-init.js에서 처리 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5M2P7GJBF0"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-5M2P7GJBF0');
-  </script>
+  <script src="/assets/gtag-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&amp;family=Jost:wght@300;400;500&amp;display=swap" rel="stylesheet">
@@ -690,6 +685,27 @@
 
       .hero-name { font-size: clamp(42px, 13vw, 64px); }
     }
+
+    /* ── 쿠키 동의 배너 ── */
+    #cookie-banner {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: var(--ink); color: rgba(255,255,255,0.85);
+      padding: 14px 40px; display: none;
+      align-items: center; justify-content: space-between;
+      gap: 20px; font-size: 12px; letter-spacing: 0.02em;
+    }
+    #cookie-banner.show { display: flex; }
+    .cookie-actions { display: flex; gap: 10px; flex-shrink: 0; }
+    .cookie-actions button {
+      padding: 6px 14px; font-size: 11px; letter-spacing: 0.08em;
+      border: 1px solid rgba(255,255,255,0.3); background: transparent;
+      color: #fff; cursor: pointer; font-family: inherit; transition: background 0.2s;
+    }
+    #cookie-accept { background: rgba(255,255,255,0.15); }
+    .cookie-actions button:hover { background: rgba(255,255,255,0.25); }
+    @media (max-width: 600px) {
+      #cookie-banner { padding: 14px 20px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
   </style>
 </head>
 <body>
@@ -698,19 +714,19 @@
   <nav id="mainNav">
     <a href="#hero" class="nav-logo">Atmosphere.note</a>
     <div class="nav-links" id="navLinks">
-      <a href="#intro" onclick="closeNav()">About</a>
-      <a href="#portfolio" onclick="closeNav()">Portfolio</a>
-      <a href="#archive" onclick="closeNav()">Archive</a>
-      <a href="#contact" onclick="closeNav()">Contact</a>
+      <a href="#intro">About</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#archive">Archive</a>
+      <a href="#contact">Contact</a>
     </div>
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleNav()" aria-label="메뉴">
+    <button class="nav-hamburger" id="navHamburger" aria-label="메뉴">
       <span></span>
       <span></span>
       <span></span>
     </button>
   </nav>
   <!-- 모바일 메뉴 오버레이 -->
-  <div class="nav-overlay" id="navOverlay" onclick="closeNav()"></div>
+  <div class="nav-overlay" id="navOverlay"></div>
 
   <!-- HERO -->
   <section id="hero">
@@ -1120,7 +1136,7 @@
 
     <!-- 더 보기 버튼 -->
     <div class="archive-more fi">
-      <button class="btn-more" id="btnMore" onclick="toggleArchive()">
+      <button class="btn-more" id="btnMore">
         <span>더 보기 (11)</span>
         <span class="btn-icon">∨</span>
       </button>
@@ -1155,138 +1171,17 @@
     <span>Atmosphere.note</span>
   </footer>
 
+  <!-- 쿠키 동의 배너 -->
+  <div id="cookie-banner">
+    <p>이 사이트는 방문 통계를 위해 Google Analytics를 사용합니다.</p>
+    <div class="cookie-actions">
+      <button id="cookie-accept">동의</button>
+      <button id="cookie-decline">거부</button>
+    </div>
+  </div>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" integrity="sha384-/1qUCSGwTur9vjf/z9lmu/eCUYbpOTgSjmpbMQZ1/CtX2v/WcAIKqRv+U1DUCG6e" crossorigin="anonymous"></script>
-  <script>
-    // 이메일 주소 렌더링 (봇 수집 방지: HTML에 평문 미노출)
-    document.querySelectorAll('.em-link').forEach(a => {
-      const addr = a.dataset.u + '@' + a.dataset.d;
-      a.querySelector('.em-addr').textContent = addr;
-      a.href = 'mailto:' + addr;
-    });
-
-    // Admin 접근: Alt+Shift+A (소스에 URL 미노출)
-    document.addEventListener('keydown', e => {
-      if (e.altKey && e.shiftKey && e.key === 'A') window.location.href = '/admin.html';
-    });
-
-    // 모바일 Nav 토글
-    function toggleNav() {
-      const links = document.getElementById('navLinks');
-      const btn   = document.getElementById('navHamburger');
-      const overlay = document.getElementById('navOverlay');
-      const isOpen = links.classList.contains('open');
-      links.classList.toggle('open', !isOpen);
-      btn.classList.toggle('open', !isOpen);
-      overlay.classList.toggle('open', !isOpen);
-      document.body.style.overflow = isOpen ? '' : 'hidden';
-    }
-
-    function closeNav() {
-      document.getElementById('navLinks').classList.remove('open');
-      document.getElementById('navHamburger').classList.remove('open');
-      document.getElementById('navOverlay').classList.remove('open');
-      document.body.style.overflow = '';
-    }
-
-    // 스크롤 페이드인
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.fi').forEach(el => io.observe(el));
-
-    // PDF 썸네일 렌더링
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-    const thumbPages = { 'thumb-1': 3, 'thumb-2': 9, 'thumb-3': 13, 'thumb-4': 17, 'thumb-5': 21 };
-
-    async function renderThumbs() {
-      try {
-        const pdf = await pdfjsLib.getDocument('assets/portfolio.pdf').promise;
-        const dpr = window.devicePixelRatio || 2;
-
-        for (const [id, pageNum] of Object.entries(thumbPages)) {
-          const container = document.getElementById(id);
-          if (!container) continue;
-
-          const page = await pdf.getPage(pageNum);
-          const natural = page.getViewport({ scale: 1 });
-
-          // 컨테이너 크기 기준으로 스케일 계산 (DPR 적용 → 고화질)
-          const cW = container.offsetWidth;
-          // 가로 기준으로만 맞춤 (A4 전체가 잘리지 않게)
-          const scale = (cW / natural.width) * dpr;
-
-          const viewport = page.getViewport({ scale });
-
-          const canvas = document.createElement('canvas');
-          canvas.width  = viewport.width;
-          canvas.height = viewport.height;
-
-          // CSS: 가로 100%, 세로는 비율에 따라 자동
-          canvas.style.position = 'relative';
-          canvas.style.width  = '100%';
-          canvas.style.height = 'auto';
-
-          await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-          container.appendChild(canvas);
-          container.classList.add('loaded');
-        }
-      } catch (e) {
-        console.warn('[Portfolio] PDF 썸네일 로드 실패:', e);
-        document.querySelectorAll('.pf-thumb-label').forEach(el => el.textContent = '미리보기 불가');
-      }
-    }
-
-    // Portfolio 섹션이 뷰에 들어올 때 썸네일 로드
-    const pfSection = document.getElementById('portfolio');
-    const pfObserver = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting) { renderThumbs(); pfObserver.disconnect(); }
-    }, { threshold: 0.05 });
-    if (pfSection) pfObserver.observe(pfSection);
-
-    // Archive 더 보기 / 접기
-    // 모바일(≤768px): 6개 표시, 데스크탑: 5개 표시
-    function archiveThreshold() { return window.innerWidth <= 768 ? 6 : 5; }
-
-    function initArchive() {
-      const t = archiveThreshold();
-      const items = document.querySelectorAll('#archiveGrid .arc-item');
-      items.forEach((el, idx) => {
-        if (idx >= t) { el.classList.add('hidden'); el.style.display = 'none'; }
-        else          { el.classList.remove('hidden'); el.style.display = ''; }
-      });
-      document.querySelector('#btnMore span:first-child').textContent = `더 보기 (${items.length - t})`;
-    }
-    initArchive();
-
-    let _archiveToggling = false;
-    function toggleArchive() {
-      if (_archiveToggling) return;
-      _archiveToggling = true;
-      setTimeout(() => { _archiveToggling = false; }, 600);
-
-      const btn = document.getElementById('btnMore');
-      const isOpen = btn.classList.contains('open');
-      const t = archiveThreshold();
-      const items = document.querySelectorAll('#archiveGrid .arc-item');
-
-      if (isOpen) {
-        // 접기
-        items.forEach((el, idx) => {
-          if (idx >= t) { el.classList.add('hidden'); el.style.display = 'none'; }
-        });
-        btn.classList.remove('open');
-        btn.querySelector('span:first-child').textContent = `더 보기 (${items.length - t})`;
-        document.getElementById('archive').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      } else {
-        // 펼치기
-        items.forEach(el => { el.classList.remove('hidden'); el.style.display = ''; });
-        btn.classList.add('open');
-        btn.querySelector('span:first-child').textContent = '접기';
-        document.querySelectorAll('#archiveGrid .arc-item:not(.on)').forEach(el => { io.observe(el); });
-      }
-    }
-  </script>
+  <script src="/assets/main.js"></script>
 
 
 

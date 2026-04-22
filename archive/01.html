@@ -35,9 +35,9 @@
       </div>
     </div>
     <div class="carousel-controls">
-      <button class="carousel-btn" onclick="moveCarousel(-1)">←</button>
+      <button class="carousel-btn">←</button>
       <span class="carousel-count" id="carouselCount">1 / 2</span>
-      <button class="carousel-btn" onclick="moveCarousel(1)">→</button>
+      <button class="carousel-btn">→</button>
     </div>
 
     <div class="post-body">
@@ -56,18 +56,7 @@
     <span>Atmosphere.note</span>
   </footer>
 
-  <script>
-    let currentSlide = 0;
-    function moveCarousel(dir) {
-      const track = document.getElementById('carouselTrack');
-      if (!track) return;
-      const total = track.children.length;
-      currentSlide = (currentSlide + dir + total) % total;
-      track.style.transform = `translateX(-${currentSlide * 100}%)`;
-      const count = document.getElementById('carouselCount');
-      if (count) count.textContent = `${currentSlide + 1} / ${total}`;
-    }
-  </script>
+  <script src="archive.js"></script>
 
 </body>
 </html>
