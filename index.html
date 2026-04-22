@@ -405,10 +405,29 @@
 
     /* 아카이브 텍스트 미리보기 */
     .arc-text {
-      padding: 12px 14px 14px;
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+      padding: 12px 14px 20px;
       display: flex;
       flex-direction: column;
       gap: 5px;
+    }
+
+    /* 에세이가 있는 항목에만 ... 표시 */
+    .arc-text:has(.arc-excerpt)::after {
+      content: '...';
+      position: absolute;
+      bottom: 6px;
+      right: 14px;
+      font-size: 11px;
+      color: var(--dim);
+      padding-left: 24px;
+      background: linear-gradient(to right, transparent, var(--line) 40%);
+    }
+
+    .arc-item.matcha .arc-text:has(.arc-excerpt)::after {
+      background: linear-gradient(to right, transparent, var(--matcha) 40%);
     }
 
     .arc-title-text {
@@ -423,9 +442,6 @@
       font-size: 11px;
       color: var(--dim);
       line-height: 1.7;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
       overflow: hidden;
     }
 
@@ -957,7 +973,7 @@
         </div>
         <div class="arc-text">
           <span class="arc-title-text">Jeju, 5pm</span>
-          <p class="arc-excerpt">제주도의 비 오는 날은 유독 검게 젖어든다.</p>
+          <p class="arc-excerpt">제주도의 비 오는 날은 유독 검게 젖어든다. 다른 지역의 건물 외벽, 담벼락, 길가의 화단에 보이는 석재가 대부분 화강암인 반면, 제주도는 대부분 현무암이기 때문일 것이다. 제주의 기반이었던 현무암은 생활이 되어 담벼락과 주택의 벽을 이뤄왔다. 현재에는 많은 도시들이 과거의 모습을 찾기 힘들거나 많이 희석되어 좋게는 다양성이 생겼고, 나쁘게는 정체성의 결여가 문제된다.</p>
         </div>
       </a>
 
