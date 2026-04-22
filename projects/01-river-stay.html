@@ -119,7 +119,8 @@
         const container = document.getElementById('canvas-container');
 
         const dpr = window.devicePixelRatio || 2;
-        const maxW = Math.min(document.getElementById('canvas-container').clientWidth || (window.innerWidth - 80), 860);
+        const sidePad = window.innerWidth <= 600 ? 40 : 80;
+        const maxW = Math.min(window.innerWidth - sidePad, 860);
         for (let i = START_PAGE; i <= END_PAGE; i++) {
           const page = await pdf.getPage(i);
           const natural = page.getViewport({ scale: 1 });
