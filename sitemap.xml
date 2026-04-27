@@ -37,6 +37,11 @@
 
   <!-- Archive -->
   <url>
+    <loc>https://kangwonhee-atmospherenote.vercel.app/archive/23.html</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://kangwonhee-atmospherenote.vercel.app/archive/01.html</loc>
     <changefreq>yearly</changefreq>
     <priority>0.6</priority>
