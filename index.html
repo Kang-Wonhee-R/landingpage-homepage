@@ -432,20 +432,20 @@
       gap: 5px;
     }
 
-    /* 에세이가 있는 항목에만 ... 표시 */
+    /* 에세이가 있는 항목 — 하단 그라데이션 페이드 */
     .arc-text:has(.arc-excerpt:not(:empty))::after {
-      content: '...';
+      content: '';
       position: absolute;
-      bottom: 6px;
-      right: 14px;
-      font-size: 11px;
-      color: var(--dim);
-      padding-left: 24px;
-      background: linear-gradient(to right, transparent, var(--line) 40%);
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 36px;
+      background: linear-gradient(to bottom, transparent, var(--line));
+      pointer-events: none;
     }
 
     .arc-item.matcha .arc-text:has(.arc-excerpt:not(:empty))::after {
-      background: linear-gradient(to right, transparent, var(--matcha) 40%);
+      background: linear-gradient(to bottom, transparent, var(--matcha));
     }
 
     .arc-title-text {
