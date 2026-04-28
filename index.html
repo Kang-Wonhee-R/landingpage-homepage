@@ -450,6 +450,24 @@
       position: relative;
     }
 
+    /* 더보기 레이블 — 호버 시 등장 */
+    .arc-excerpt:not(:empty)::before {
+      content: '더 보기';
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--ink);
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
+      z-index: 2;
+      pointer-events: none;
+    }
+
     .arc-excerpt:not(:empty)::after {
       content: '';
       position: absolute;
@@ -459,6 +477,17 @@
       height: 60px;
       background: linear-gradient(to bottom, transparent, var(--line));
       pointer-events: none;
+      z-index: 1;
+      transition: height 0.35s ease;
+    }
+
+    .arc-item:hover .arc-excerpt:not(:empty)::after {
+      height: 90px;
+    }
+
+    .arc-item:hover .arc-excerpt:not(:empty)::before {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .arc-item.matcha .arc-excerpt:not(:empty)::after {
