@@ -450,19 +450,16 @@
       position: relative;
     }
 
-    /* 더보기 레이블 — 호버 시 등장 */
+    /* 화살표 — 호버 시 우측 하단 등장 */
     .arc-excerpt:not(:empty)::before {
-      content: '더 보기';
+      content: '→';
       position: absolute;
       bottom: 10px;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.14em;
+      right: 14px;
+      font-size: 13px;
       color: var(--ink);
       opacity: 0;
-      transform: translateY(5px);
+      transform: translateX(-4px);
       transition: opacity 0.3s ease 0.05s, transform 0.3s ease 0.05s;
       z-index: 2;
       pointer-events: none;
