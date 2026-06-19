@@ -13,11 +13,11 @@ async function hashPassword(pw) {
 }
 
 function getAttemptData() {
-  return JSON.parse(sessionStorage.getItem('admin-attempts') || '{"count":0,"lockUntil":0}');
+  return JSON.parse(localStorage.getItem('admin-attempts') || '{"count":0,"lockUntil":0}');
 }
 
 function setAttemptData(data) {
-  sessionStorage.setItem('admin-attempts', JSON.stringify(data));
+  localStorage.setItem('admin-attempts', JSON.stringify(data));
 }
 
 // ── 로그인 ──
@@ -256,7 +256,8 @@ function saveAndDownload() {
     if (label === 'instagram') {
       const v = document.getElementById('contact-instagram').value;
       if (valSpan) valSpan.textContent = v;
-      link.href = 'https://instagram.com/' + v.replace('@', '');
+      const handle = v.replace('@', '').replace(/[^a-zA-Z0-9._]/g, '');
+      link.href = 'https://www.instagram.com/' + handle + '/';
     }
   });
 

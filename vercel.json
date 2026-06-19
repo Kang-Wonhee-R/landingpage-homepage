@@ -2,6 +2,10 @@
   "buildCommand": null,
   "outputDirectory": ".",
   "installCommand": null,
+  "redirects": [
+    { "source": "/admin.html",       "destination": "/", "permanent": false },
+    { "source": "/assets/admin.js",  "destination": "/", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/(.*)",
