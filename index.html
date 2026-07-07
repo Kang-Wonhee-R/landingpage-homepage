@@ -36,7 +36,7 @@
       --rose:  #D4C0BE;
       --soft:  #E8DFDB;
       --matcha: #C7C7BB;
-      --max:   900px;
+      --max:   1100px;
       --ease:  cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -74,10 +74,15 @@
       top: 0; left: 0; right: 0;
       z-index: 99;
       padding: 18px 40px;
+      mix-blend-mode: multiply;
+    }
+
+    .nav-inner {
+      max-width: var(--max);
+      margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      mix-blend-mode: multiply;
     }
 
     .nav-logo {
@@ -113,16 +118,54 @@
     .nav-links a:hover { color: var(--ink); }
     .nav-links a:hover::after { right: 0; }
 
-    /* ── HERO ── */
+    /* ── HERO — 매거진 커버 ── */
     #hero {
       height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-      padding: 0 40px 72px;
+      padding: 88px 40px 0;
       position: relative;
       overflow: hidden;
     }
+
+    /* 커버 상단 메타 — 발행 정보처럼 */
+    .hero-top {
+      max-width: var(--max);
+      width: 100%;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-top span {
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .hero-top span em {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 12px;
+      text-transform: none;
+      letter-spacing: 0.08em;
+      color: var(--rose);
+    }
+
+    .hero-center {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
 
     /* 은은한 빛 번짐 — 천천히 숨쉬는 오후의 빛 */
     #hero::before {
@@ -147,13 +190,12 @@
 
     .hero-name {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(64px, 10vw, 120px);
+      font-size: clamp(72px, 13vw, 190px);
       font-weight: 300;
       font-style: normal;
-      line-height: 0.98;
-      letter-spacing: -0.02em;
+      line-height: 0.94;
+      letter-spacing: -0.015em;
       color: var(--ink);
-      margin-bottom: 28px;
       position: relative;
     }
 
@@ -162,27 +204,20 @@
       font-weight: 300;
     }
 
-    .hero-line {
-      font-size: 13px;
+    /* 이름 아래 — 표지 캡션 */
+    .hero-caption {
+      margin-top: 32px;
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
       color: var(--dim);
-      letter-spacing: 0.04em;
-      max-width: 420px;
-      line-height: 1.7;
-      padding-left: 2px;
       position: relative;
-    }
-
-    .hero-line em {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-style: italic;
-      font-size: 15px;
-      color: var(--rose);
     }
 
     /* 스크롤 큐 — 가늘게 흐르는 선 */
     .hero-scroll {
       position: absolute;
-      bottom: 0; right: 48px;
+      bottom: 48px; right: 48px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -213,84 +248,205 @@
       100% { transform: scaleY(0); transform-origin: bottom; }
     }
 
-    /* ── INTRO ── */
-    #intro {
-      padding: 96px 40px;
-      border-top: 1px solid var(--line);
-    }
-
-    .intro-inner {
-      max-width: var(--max);
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1.6fr;
-      gap: 80px;
-      align-items: start;
-    }
-
-    .intro-left {
-      padding-top: 6px;
-    }
-
-    .intro-left p {
-      font-size: 11px;
-      letter-spacing: 0.18em;
+    /* ── 공통 — 섹션 킥커 (잡지 폴리오) ── */
+    .sec-kicker {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 10px;
+      letter-spacing: 0.3em;
       text-transform: uppercase;
       color: var(--rose);
-      line-height: 2;
+      margin-bottom: 28px;
     }
 
-    .intro-text p {
-      font-size: 16px;
-      line-height: 2;
+    .sec-kicker::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* ── INTRO — 세로 라인과 레터 K ── */
+    #intro {
+      padding: 0 40px 8px;
+    }
+
+    .intro-head {
+      max-width: var(--max);
+      margin: 0 auto;
+    }
+
+    .intro-head .sec-kicker {
+      margin-bottom: 56px;
+    }
+
+    /* 내용 아래 — 킥커와 같은 간격의 마감 라인 */
+    .intro-foot {
+      max-width: var(--max);
+      margin: 56px auto 0;
+      height: 1px;
+      background: var(--line);
+    }
+
+    /* 히어로와 01 — About 사이 구분 라인 */
+    .intro-divider-top {
+      margin: 0 auto 56px;
+    }
+
+    /* K의 보이는 폭(auto) + 텍스트 폭에 맞춰 전체 묶음을 중앙 정렬 */
+    .intro-stage {
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+
+    /* 세로 헤어라인 — 양 끝에 점 */
+    .intro-line-col {
+      position: relative;
+      border-right: 1px solid var(--ink);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .intro-line-col::before,
+    .intro-line-col::after {
+      content: '';
+      position: absolute;
+      right: -2px;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--ink);
+      z-index: 1;
+    }
+
+    .intro-line-col::before { top: 0; }
+    .intro-line-col::after  { bottom: 0; }
+
+    /* 라인에 걸쳐 잘리는 초대형 K */
+    .intro-letter {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 500;
+      font-size: clamp(220px, 30vw, 340px);
+      line-height: 0.8;
       color: var(--ink);
-      margin-bottom: 20px;
+      margin-right: -0.28em;
+      user-select: none;
     }
 
-    .intro-text p:last-child { margin-bottom: 0; }
+    .intro-body {
+      padding: 72px 0 72px 72px;
+      display: flex;
+      flex-direction: column;
+    }
 
-    .intro-text p span {
+    .intro-vol {
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ink);
+      margin-bottom: 36px;
+    }
+
+    .intro-vol em {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      text-transform: none;
+    }
+
+    /* 믹스 타이포 타이틀 */
+    .intro-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 27px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--ink);
+      margin-bottom: 28px;
+      letter-spacing: 0.01em;
+    }
+
+    .intro-title span {
+      font-family: 'Jost', sans-serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .intro-title em {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--dim);
+    }
+
+    .intro-para {
+      font-size: 13px;
+      line-height: 1.95;
+      color: var(--ink);
+      max-width: 340px;
+      margin-bottom: 44px;
+    }
+
+    .intro-para span {
+      color: var(--dim);
+    }
+
+    .intro-year {
+      font-size: 11px;
+      letter-spacing: 0.1em;
       color: var(--dim);
     }
 
     /* ── PORTFOLIO ── */
     #portfolio {
-      padding: 80px 0 96px;
-      border-top: 1px solid var(--line);
+      padding: 120px 40px 56px;
     }
 
     .portfolio-header {
       max-width: var(--max);
-      margin: 0 auto 48px;
-      padding: 0 40px;
+      margin: 0 auto 72px;
+    }
+
+    .portfolio-header .header-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-end;
+      gap: 40px;
     }
 
     .portfolio-header h2 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 22px;
-      font-weight: normal;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
       font-style: italic;
-      flex: 1;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
     }
 
     .portfolio-header p {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--dim);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       text-align: right;
       flex-shrink: 0;
+      padding-bottom: 8px;
     }
 
     /* 포트폴리오 항목 — 수평 레이아웃 */
     .pf-item {
       max-width: var(--max);
-      margin: 0 auto 2px;
-      padding: 0 40px;
+      margin: 0 auto;
+      padding: 0;
       display: grid;
-      grid-template-columns: 200px 1fr;
+      grid-template-columns: 280px 1fr;
       gap: 0;
       align-items: start;
       border-top: 1px solid var(--line);
@@ -313,8 +469,9 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      width: 200px;
+      width: 280px;
       flex-shrink: 0;
+      margin: 40px 0;
     }
 
     .pf-thumb canvas {
@@ -345,15 +502,16 @@
     }
 
     .pf-info {
-      padding: 32px 0 32px 40px;
+      padding: 44px 0 44px 56px;
+      align-self: stretch;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      border-left: 1px solid var(--line);
+      gap: 24px;
     }
 
     .pf-num {
-      font-size: 11px;
+      font-size: 15px;
       color: var(--rose);
       letter-spacing: 0.12em;
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -363,61 +521,72 @@
 
     .pf-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 19px;
-      font-weight: normal;
-      line-height: 1.4;
+      font-size: clamp(24px, 2.6vw, 30px);
+      font-weight: 300;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
       transition: font-style 0.2s, color 0.4s var(--ease);
     }
 
     .pf-desc {
       font-size: 12px;
       color: var(--dim);
-      line-height: 1.65;
-      margin-top: 6px;
+      line-height: 1.7;
+      margin-top: 12px;
+      max-width: 440px;
     }
 
     .pf-meta {
-      font-size: 12px;
+      font-size: 10px;
       color: var(--dim);
-      letter-spacing: 0.04em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
     }
 
     /* ── ARCHIVE ── */
     #archive {
-      padding: 80px 0 96px;
-      border-top: 1px solid var(--line);
+      padding: 120px 0 136px;
     }
 
     .archive-header {
-      max-width: var(--max);
-      margin: 0 auto 52px;
+      max-width: calc(var(--max) + 80px);
+      margin: 0 auto 72px;
       padding: 0 40px;
+    }
+
+    .archive-header .header-row {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: flex-end;
+      gap: 40px;
     }
 
     .archive-header h2 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 22px;
-      font-weight: normal;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
       font-style: italic;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
     }
 
     .archive-header p {
-      font-size: 12px;
+      font-size: 11px;
       color: var(--dim);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       text-align: right;
+      padding-bottom: 8px;
     }
 
-    /* 아카이브 — 에디토리얼 그리드 */
+    /* 아카이브 — 갤러리 그리드 (넉넉한 거터) */
     .archive-grid {
-      max-width: var(--max);
+      max-width: calc(var(--max) + 80px);
       margin: 0 auto;
       padding: 0 40px;
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 3px;
+      gap: 44px 28px;
     }
 
     /* 첫 번째 항목 — 세로 2칸 피처드 */
@@ -530,18 +699,19 @@
       flex: 1;
       overflow: hidden;
       position: relative;
-      padding: 12px 14px 20px;
+      padding: 14px 16px 22px;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 6px;
     }
 
     .arc-title-text {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 13px;
+      font-size: 15px;
       font-style: italic;
       color: var(--ink);
       line-height: 1.3;
+      letter-spacing: 0.02em;
     }
 
     /* 에세이가 있는 항목 — 하단 그라데이션 페이드 */
@@ -597,7 +767,7 @@
 
     /* 더 보기 버튼 */
     .archive-more {
-      max-width: var(--max);
+      max-width: calc(var(--max) + 80px);
       margin: 0 auto;
       padding: 36px 40px 0;
       text-align: center;
@@ -634,8 +804,7 @@
 
     /* ── CONTACT ── */
     #contact {
-      padding: 96px 40px 112px;
-      border-top: 1px solid var(--line);
+      padding: 120px 40px 140px;
     }
 
     .contact-inner {
@@ -644,63 +813,75 @@
     }
 
     .contact-inner p.sub {
-      font-size: 11px;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--rose);
-      margin-bottom: 24px;
-    }
-
-    .contact-inner h2 {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: clamp(30px, 4.5vw, 52px);
-      font-weight: normal;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 300;
       font-style: italic;
-      line-height: 1.3;
-      margin-bottom: 52px;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 64px;
     }
 
+    /* 연락처 — 하나의 하얀 지면 위 3단 컬럼 */
     .contact-row {
-      display: flex;
-      gap: 48px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line);
     }
 
     .c-link {
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 10px;
+      padding: 28px 32px 32px 0;
+      border-bottom: 1px solid var(--line);
+      transition: background 0.5s var(--ease);
+    }
+
+    .c-link + .c-link {
+      padding-left: 32px;
+      border-left: 1px solid var(--line);
     }
 
     .c-link span:first-child {
       font-size: 10px;
-      letter-spacing: 0.18em;
+      letter-spacing: 0.24em;
       text-transform: uppercase;
       color: var(--rose);
     }
 
     .c-link span:last-child {
-      font-size: 15px;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-style: italic;
       color: var(--ink);
-      border-bottom: 1px solid var(--line);
-      padding-bottom: 2px;
-      transition: border-color 0.2s;
+      transition: color 0.4s var(--ease), letter-spacing 0.4s var(--ease);
     }
 
-    .c-link:hover span:last-child { border-color: var(--rose); }
+    .c-link:hover span:last-child { color: var(--rose); letter-spacing: 0.03em; }
 
-    /* ── FOOTER ── */
+    /* ── FOOTER — 콜로폰 ── */
     footer {
-      border-top: 1px solid var(--line);
-      padding: 22px 40px;
+      padding: 40px 40px 48px;
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
     }
 
     footer span {
-      font-size: 11px;
+      font-size: 10px;
       color: var(--dim);
-      letter-spacing: 0.06em;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+    }
+
+    footer span + span::before {
+      content: '·';
+      margin-right: 20px;
+      color: var(--line);
     }
 
     /* ── FADE IN ── */
@@ -714,9 +895,9 @@
     .fi.on { opacity: 1; transform: none; filter: none; }
 
     /* 히어로 — 계단식 등장 */
-    .hero-name.fi { transition-delay: 0.15s; }
-    .hero-line.fi { transition-delay: 0.5s; }
-    .hero-scroll.fi { transition-delay: 0.9s; }
+    .hero-top.fi { transition-delay: 0.6s; }
+    .hero-center.fi { transition-delay: 0.15s; }
+    .hero-scroll.fi { transition-delay: 1s; }
 
     /* 아카이브 그리드 — 미세한 스태거 */
     .arc-item.fi:nth-child(3n+2) { transition-delay: 0.08s; }
@@ -726,6 +907,30 @@
       .fi { transition: none; filter: none; transform: none; opacity: 1; }
       #hero::before, .hero-scroll::after { animation: none; }
     }
+
+    /* ── 영문 텍스트 — 세리프(Cormorant Garamond)로 통일 ── */
+    .nav-links a,
+    .hero-top span,
+    .hero-caption,
+    .hero-scroll span,
+    .sec-kicker,
+    .intro-vol,
+    .intro-title span,
+    .intro-year,
+    .portfolio-header p,
+    .archive-header p,
+    .pf-desc,
+    .pf-meta,
+    .c-link span:first-child,
+    footer span {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+    }
+
+    /* 세리프 소형 텍스트 가독성 보정 */
+    .nav-links a { font-size: 13px; }
+    .sec-kicker, .intro-vol, .c-link span:first-child { font-size: 12px; }
+    .hero-top span, .hero-caption, .pf-meta, footer span, .hero-scroll span { font-size: 12px; }
+    .pf-desc, .portfolio-header p, .archive-header p { font-size: 13px; }
 
     /* ── 햄버거 버튼 (기본 숨김) ── */
     .nav-hamburger {
@@ -803,49 +1008,69 @@
       .nav-links a:last-child { border-bottom: none; }
 
       /* Hero */
-      #hero { padding: 0 20px 56px; }
+      #hero { padding: 72px 20px 0; }
 
-      .hero-name { font-size: clamp(48px, 14vw, 80px); }
+      .hero-top { padding-bottom: 12px; }
+      .hero-top span:nth-child(2) { display: none; }
+      .hero-top span { font-size: 11px; letter-spacing: 0.2em; }
+
+      .hero-name { font-size: clamp(56px, 17vw, 96px); }
+      .hero-caption { margin-top: 20px; font-size: 11px; letter-spacing: 0.24em; }
 
       .hero-scroll { display: none; }
 
       /* Sections */
       #intro, #contact { padding-left: 20px; padding-right: 20px; }
+      #intro { padding-top: 0; padding-bottom: 4px; }
 
-      .intro-inner { grid-template-columns: 1fr; gap: 24px; }
-      .intro-left { display: none; }
-      .intro-text p { font-size: 15px; }
+      .sec-kicker { margin-bottom: 20px; }
+
+      .intro-letter { font-size: 170px; margin-right: -0.3em; }
+      .intro-body { padding: 48px 0 48px 36px; }
+      .intro-vol { margin-bottom: 24px; }
+      .intro-title { font-size: 22px; }
+      .intro-title span { font-size: 16px; }
+      .intro-para { font-size: 12.5px; margin-bottom: 32px; }
 
       /* Portfolio */
-      #portfolio { padding: 64px 0 72px; }
-      .portfolio-header { padding: 0 20px; }
-      .pf-item { padding: 0 20px; grid-template-columns: 1fr; }
-      .pf-thumb { width: 100%; height: auto; overflow: visible; align-items: flex-start; }
+      #portfolio { padding: 80px 20px 48px; }
+      .portfolio-header { margin-bottom: 48px; }
+      .portfolio-header .header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .portfolio-header p { text-align: left; padding-bottom: 0; }
+      .pf-item { grid-template-columns: 1fr; }
+      .pf-thumb { width: 100%; height: auto; overflow: visible; align-items: flex-start; margin: 24px 0 0; }
       .pf-thumb canvas { width: 100%; height: auto; display: block; }
-      .pf-info { padding: 20px 0 24px; border-left: none; border-top: 1px solid var(--line); }
+      .pf-info { padding: 20px 0 28px; gap: 16px; }
 
       /* Archive */
-      #archive { padding: 64px 0 72px; }
-      .archive-header { padding: 0 20px; }
-      .archive-grid { grid-template-columns: 1fr 1fr; gap: 2px; padding: 0 20px; }
+      #archive { padding: 80px 0 88px; }
+      .archive-header { padding: 0 20px; margin-bottom: 48px; }
+      .archive-header .header-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .archive-header p { text-align: left; padding-bottom: 0; }
+      .archive-grid { grid-template-columns: 1fr 1fr; gap: 28px 14px; padding: 0 20px; }
       .arc-item:first-child { grid-row: auto; }
       .arc-item:first-child .arc-thumb { aspect-ratio: 1 / 1; height: auto; min-height: unset; }
-      .archive-more { padding: 28px 20px 0; }
+      .archive-more { padding: 36px 20px 0; }
       .btn-more { padding: 13px 32px; font-size: 12px; width: 100%; justify-content: center; }
 
       /* Contact */
-      .contact-row { flex-direction: column; gap: 20px; }
-      .c-link span:last-child { font-size: 14px; }
+      #contact { padding-top: 80px; padding-bottom: 96px; }
+      .contact-inner p.sub { margin-bottom: 40px; }
+      .contact-row { grid-template-columns: 1fr; }
+      .c-link { padding: 20px 0 22px; }
+      .c-link + .c-link { padding-left: 0; border-left: none; }
+      .c-link span:last-child { font-size: 16px; }
 
       /* Footer */
-      footer { padding: 18px 20px; flex-direction: column; gap: 6px; }
+      footer { padding: 28px 20px 36px; flex-direction: column; gap: 8px; }
+      footer span + span::before { content: none; }
     }
 
     @media (max-width: 480px) {
       /* 아주 작은 화면에서도 2열 유지 */
       .archive-grid { grid-template-columns: 1fr 1fr; }
 
-      .hero-name { font-size: clamp(42px, 13vw, 64px); }
+      .hero-name { font-size: clamp(48px, 16vw, 72px); }
     }
 
     /* ── 쿠키 동의 배너 ── */
@@ -874,26 +1099,35 @@
 
   <!-- NAV -->
   <nav id="mainNav">
-    <a href="#hero" class="nav-logo">Atmosphere.note</a>
-    <div class="nav-links" id="navLinks">
-      <a href="#intro">About</a>
-      <a href="#portfolio">Portfolio</a>
-      <a href="#archive">Archive</a>
-      <a href="#contact">Contact</a>
+    <div class="nav-inner">
+      <a href="#hero" class="nav-logo">Atmosphere.note</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#intro">About</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#archive">Archive</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="nav-hamburger" id="navHamburger" aria-label="메뉴">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
-    <button class="nav-hamburger" id="navHamburger" aria-label="메뉴">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
   </nav>
   <!-- 모바일 메뉴 오버레이 -->
   <div class="nav-overlay" id="navOverlay"></div>
 
   <!-- HERO -->
   <section id="hero">
-    <h1 class="hero-name fi">Kang<br><em>Wonhee</em></h1>
-    <p class="hero-line fi">Designing <em>atmospheres</em> for value</p>
+    <div class="hero-top fi">
+      <span>Portfolio &amp; Field Notes</span>
+      <span><em>Atmosphere.note</em></span>
+      <span>Designing <em>atmospheres</em> for value</span>
+    </div>
+    <div class="hero-center fi">
+      <h1 class="hero-name">Kang<br><em>Wonhee</em></h1>
+      <p class="hero-caption">Architecture · Atmosphere · Record</p>
+    </div>
     <div class="hero-scroll fi" aria-hidden="true">
       <span>Scroll</span>
     </div>
@@ -901,30 +1135,36 @@
 
   <!-- INTRO -->
   <section id="intro">
-    <div class="intro-inner">
-      <div class="intro-left fi">
-        <p>공간을 읽는 사람</p>
-        <p>분위기를 짓는 일</p>
-        <p>——</p>
-        <p>조용한 것들의 기록</p>
-        <p>빛과 여백 사이</p>
-        <p>감각의 축적</p>
-        <p>Atmosphere.note</p>
+    <div class="intro-foot intro-divider-top" aria-hidden="true"></div>
+    <div class="intro-head">
+      <p class="sec-kicker fi">01 — About</p>
+    </div>
+    <div class="intro-stage fi">
+      <div class="intro-line-col" aria-hidden="true">
+        <span class="intro-letter">K</span>
       </div>
-      <div class="intro-text fi">
-        <p>구조, 빛, 시간, 재료, 여백 — 공간이 언어 없이도 분위기를 만드는 것들을 바라봅니다.</p>
-        <p><span>그 시선이 지금 하는 일로 이어졌습니다.</span> 저의 건축은 "어떤 분위기를 만들 것인가"에서 시작합니다.</p>
-        <p><span>Atmosphere.note는 그 과정의 기록입니다.</span> 공간을 걷고, 차를 마시고, 조용한 것들을 관찰하며
-          쌓아온 감각의 축적을 기록합니다.</p>
+      <div class="intro-body">
+        <p class="intro-vol">Volume <em>. 01</em></p>
+        <h2 class="intro-title">my <span>Quiet</span> atmosphere <em>note</em></h2>
+        <p class="intro-para">구조, 빛, 시간, 재료, 여백 — 공간이 언어 없이도
+          분위기를 만드는 것들을 바라봅니다. 저의 건축은
+          "어떤 분위기를 만들 것인가"에서 시작합니다.
+          <span>[ 공간을 걷고, 차를 마시고, 조용한 것들을
+          관찰하며 쌓아온 감각의 축적 — 그 과정의 기록입니다. ]</span></p>
+        <p class="intro-year">since two thousand and twenty-six</p>
       </div>
     </div>
+    <div class="intro-foot" aria-hidden="true"></div>
   </section>
 
   <!-- PORTFOLIO -->
   <section id="portfolio">
     <div class="portfolio-header fi">
-      <h2>Architecture Portfolio</h2>
-      <p>Bachelor of Architecture's design studio</p>
+      <p class="sec-kicker">02 — Selected Works</p>
+      <div class="header-row">
+        <h2>Architecture<br>Portfolio</h2>
+        <p>Bachelor of Architecture's design studio</p>
+      </div>
     </div>
 
     <a href="projects/01-river-stay.html" class="pf-item fi">
@@ -1017,8 +1257,11 @@
   <!-- ARCHIVE -->
   <section id="archive">
     <div class="archive-header fi">
-      <h2>Archive</h2>
-      <p>Field notes on atmosphere</p>
+      <p class="sec-kicker">03 — Journal</p>
+      <div class="header-row">
+        <h2>Archive</h2>
+        <p>Field notes on atmosphere</p>
+      </div>
     </div>
 
     <div class="archive-grid" id="archiveGrid">
@@ -1725,8 +1968,8 @@
   <!-- CONTACT -->
   <section id="contact">
     <div class="contact-inner">
-      <p class="sub fi">Contact</p>
-      <h2 class="fi">어느 오후의 빛처럼,<br>오래 머무는 공간을 만들고 싶습니다.</h2>
+      <p class="sec-kicker fi">04 — Contact</p>
+      <p class="sub fi">Get in touch</p>
       <div class="contact-row fi">
         <a href="#" class="c-link em-link" data-u="1sophia4" data-d="naver.com">
           <span>Email</span>
