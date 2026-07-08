@@ -64,53 +64,38 @@ var io = new IntersectionObserver(function (entries) {
 }, { threshold: 0.08 });
 document.querySelectorAll('.fi').forEach(function (el) { io.observe(el); });
 
-// ── PDF 썸네일 렌더링 ──
-pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+// ── Portfolio 가로 스크롤 — 마우스 드래그 ──
+var pfTrack = document.getElementById('pfTrack');
+if (pfTrack) {
+  var pfDown = false, pfMoved = false, pfStartX = 0, pfStartLeft = 0;
 
-var thumbPages = { 'thumb-1': 3, 'thumb-2': 9, 'thumb-3': 13, 'thumb-4': 17, 'thumb-5': 21 };
+  pfTrack.addEventListener('pointerdown', function (e) {
+    if (e.pointerType !== 'mouse') return; // 터치는 네이티브 스크롤 사용
+    pfDown = true; pfMoved = false;
+    pfStartX = e.clientX; pfStartLeft = pfTrack.scrollLeft;
+    pfTrack.classList.add('dragging');
+  });
 
-async function renderThumbs() {
-  try {
-    var pdf = await pdfjsLib.getDocument('assets/portfolio.pdf').promise;
-    var dpr = window.devicePixelRatio || 2;
+  window.addEventListener('pointermove', function (e) {
+    if (!pfDown) return;
+    var dx = e.clientX - pfStartX;
+    if (Math.abs(dx) > 5) pfMoved = true;
+    pfTrack.scrollLeft = pfStartLeft - dx;
+  });
 
-    for (var [id, pageNum] of Object.entries(thumbPages)) {
-      var container = document.getElementById(id);
-      if (!container) continue;
+  window.addEventListener('pointerup', function () {
+    pfDown = false;
+    pfTrack.classList.remove('dragging');
+  });
 
-      var page    = await pdf.getPage(pageNum);
-      var natural = page.getViewport({ scale: 1 });
-      var cW      = container.offsetWidth;
-      var scale   = (cW / natural.width) * dpr;
-      var viewport = page.getViewport({ scale });
-
-      var canvas = document.createElement('canvas');
-      canvas.width  = viewport.width;
-      canvas.height = viewport.height;
-      canvas.style.position = 'relative';
-      canvas.style.width  = '100%';
-      canvas.style.height = 'auto';
-
-      await page.render({ canvasContext: canvas.getContext('2d'), viewport }).promise;
-      container.appendChild(canvas);
-      container.classList.add('loaded');
-    }
-  } catch (e) {
-    document.querySelectorAll('.pf-thumb-label').forEach(function (el) {
-      el.textContent = '미리보기 불가';
-    });
-  }
+  // 드래그 후 클릭으로 링크가 열리지 않도록
+  pfTrack.addEventListener('click', function (e) {
+    if (pfMoved) { e.preventDefault(); e.stopPropagation(); }
+  }, true);
 }
 
-// Portfolio 섹션이 뷰에 들어올 때 썸네일 로드
-var pfSection  = document.getElementById('portfolio');
-var pfObserver = new IntersectionObserver(function (entries) {
-  if (entries[0].isIntersecting) { renderThumbs(); pfObserver.disconnect(); }
-}, { threshold: 0.05 });
-if (pfSection) pfObserver.observe(pfSection);
-
 // ── Archive 더 보기 / 접기 ──
-function archiveThreshold() { return window.innerWidth <= 768 ? 6 : 5; }
+function archiveThreshold() { return 8; }
 
 function initArchive() {
   var t     = archiveThreshold();
