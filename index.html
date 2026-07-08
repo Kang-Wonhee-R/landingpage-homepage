@@ -658,9 +658,24 @@
 
     .pf-card:hover .pf-card-img img { transform: scale(1.05); filter: saturate(1); }
 
-    /* 01 썸네일 — 확대 크롭 */
-    .pf-card:first-child .pf-card-img img { transform: scale(1.25); }
+    /* 01 썸네일 — 슬라이드쇼 (크로스페이드) */
+    .pf-card:first-child .pf-card-img { position: relative; }
+    .pf-card:first-child .pf-card-img img {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      animation: pfSlide 12s infinite;
+    }
+    .pf-card:first-child .pf-card-img img:nth-child(1) { animation-delay: 0s; transform: scale(1.25); }
+    .pf-card:first-child .pf-card-img img:nth-child(2) { animation-delay: 4s; transform: scale(1.25); }
+    .pf-card:first-child .pf-card-img img:nth-child(3) { animation-delay: 8s; transform: scale(1.25); }
     .pf-card:first-child:hover .pf-card-img img { transform: scale(1.32); }
+
+    @keyframes pfSlide {
+      0%, 27% { opacity: 1; }
+      36%, 91% { opacity: 0; }
+      100% { opacity: 1; }
+    }
 
     .pf-card-num {
       display: block;
@@ -1400,7 +1415,11 @@
 
       <div class="pf-track" id="pfTrack">
         <a href="projects/01-river-stay.html" class="pf-card fi">
-          <div class="pf-card-img"><img src="assets/pf-01.jpg" alt="RIVER STAY; on HAN" loading="lazy"></div>
+          <div class="pf-card-img">
+            <img src="assets/pf-01.jpg" alt="RIVER STAY; on HAN" loading="lazy">
+            <img src="assets/pf-01b.jpg" alt="" loading="lazy">
+            <img src="assets/pf-01c.jpg" alt="" loading="lazy">
+          </div>
           <span class="pf-card-num">01</span>
           <span class="pf-card-title">RIVER STAY; on HAN</span>
         </a>
