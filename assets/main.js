@@ -94,9 +94,9 @@ if (pfTrack) {
   }, true);
 }
 
-// ── Archive 제목 — 장소명 대문자, am/pm은 소문자 유지 ──
+// ── Archive 제목 — 장소명 대문자, am/pm/sec 등 시간 단위는 소문자 유지 ──
 document.querySelectorAll('.arc-title-text').forEach(function (el) {
-  el.textContent = el.textContent.toUpperCase().replace(/(\d\s?)(AM|PM)\b/g, function (m, d, ap) {
+  el.textContent = el.textContent.toUpperCase().replace(/(\d\s?)(AM|PM|SEC|MIN)\b/g, function (m, d, ap) {
     return d + ap.toLowerCase();
   });
 });
