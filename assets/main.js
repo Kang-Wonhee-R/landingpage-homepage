@@ -101,6 +101,16 @@ document.querySelectorAll('.arc-title-text').forEach(function (el) {
   });
 });
 
+// ── Archive 트레이싱지 페이지 번호 — arc-num(썸네일 오버레이)에서 그대로 복사해 data-page에 기록.
+//    CSS가 counter()로 순서 기반 번호를 계산하던 예전 방식은 항목을 추가/삭제할 때마다
+//    counter-reset 값을 수동으로 맞춰야 해서 계속 어긋났음. 이제는 각 항목에 이미 적혀있는
+//    실제 번호(arc-num)를 그대로 가져오므로 항목 순서/개수와 무관하게 항상 일치한다. ──
+document.querySelectorAll('#archiveGrid .arc-item').forEach(function (el) {
+  var numEl  = el.querySelector('.arc-num');
+  var textEl = el.querySelector('.arc-text'); // ::before는 arc-text에 붙으므로 속성도 arc-text에 있어야 attr()이 읽는다
+  if (numEl && textEl) textEl.dataset.page = numEl.textContent.trim();
+});
+
 // ── Archive 더 보기 / 접기 ──
 function archiveThreshold() { return 8; }
 

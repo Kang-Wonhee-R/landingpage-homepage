@@ -883,9 +883,6 @@
     }
 
     /* ── 트레이싱지 — 썸네일 뒤에 껴 있는 반투명지 ── */
-    /* 페이지 번호 카운터: 첫 항목 p.98부터 내림차순 */
-    .archive-grid { counter-reset: arcPage 94; }
-    .arc-item { counter-increment: arcPage -1; }
 
     /* 뒤에 껴 있는 상태 — 우측/하단으로 살짝 삐져나온 종이 */
     .arc-item::before {
@@ -943,9 +940,9 @@
     /* 종이가 앞으로 나오는 동안 뒤에 껴 있던 종이는 사라짐 */
     .arc-item:hover::before { opacity: 0; }
 
-    /* 페이지 번호 — 좌측 상단 */
+    /* 페이지 번호 — 좌측 상단. arc-num(썸네일 오버레이)과 JS로 항상 동기화되는 data-page 속성을 그대로 표시 — 항목 추가/삭제 순서와 무관하게 항상 정확함 */
     .arc-text::before {
-      content: 'p.' counter(arcPage, decimal-leading-zero);
+      content: attr(data-page);
       font-size: 10px;
       letter-spacing: 0.1em;
       color: rgba(74, 64, 59, 0.8);
@@ -1478,7 +1475,7 @@
           </div>
         </div>
         <div class="arc-text">
-          <span class="arc-title-text">Tea at home</span>
+          <span class="arc-title-text">Uva, 2min</span>
           <p class="arc-excerpt"></p>
         </div>
       </a>
@@ -2891,7 +2888,7 @@
     </div>
   </div>
 
-  <script src="/assets/main.js?v=4"></script>
+  <script src="/assets/main.js?v=5"></script>
 
 
 
